@@ -346,7 +346,7 @@ body {
     background: var(--bg-secondary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
-    overflow-x: auto;
+    overflow: visible;
 }
 
 .data-table {
@@ -356,7 +356,7 @@ body {
 
 .data-table th {
     background: rgba(255, 255, 255, 0.02);
-    padding: 16px 24px;
+    padding: 0;
     text-align: left;
     font-size: 0.75rem;
     font-weight: 600;
@@ -421,48 +421,50 @@ body {
 }
 
 /* Tooltip System */
-[data-tooltip] {
+.tooltip-trigger {
     position: relative;
     cursor: help;
+    padding: 16px 24px;
+    width: 100%;
 }
 
-[data-tooltip]::before {
+.tooltip-trigger::before {
     content: attr(data-tooltip);
     position: absolute;
-    bottom: calc(100% + 10px);
+    bottom: calc(100% + 12px);
     left: 50%;
     transform: translateX(-50%) translateY(5px);
     background: #1a1a20;
     color: #ffffff;
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1.4;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.5;
     text-align: center;
     white-space: normal;
-    width: 200px;
-    z-index: 10000;
+    width: 220px;
+    z-index: 99999;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
     border: 1px solid var(--accent);
-    text-transform: none; /* Crucial: Prevent inheriting uppercase from TH */
+    text-transform: none;
 }
 
-[data-tooltip]:hover::before {
+.tooltip-trigger:hover::before {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
 }
 
 /* Tooltip Arrow */
-[data-tooltip]::after {
+.tooltip-trigger::after {
     content: '';
     position: absolute;
-    bottom: 100%;
+    bottom: calc(100% + 6px);
     left: 50%;
     transform: translateX(-50%);
     border-width: 6px 6px 0 6px;
@@ -470,11 +472,11 @@ body {
     border-color: var(--accent) transparent transparent transparent;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.2s;
-    z-index: 10000;
+    transition: all 0.25s;
+    z-index: 99999;
 }
 
-[data-tooltip]:hover::after {
+.tooltip-trigger:hover::after {
     opacity: 1;
     visibility: visible;
 }
