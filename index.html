@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEN-MAMA-MX | Pipeline de Precision Oncology</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 20px;">
+                        <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93"/>
+                    </svg>
+                </div>
+                <h1 class="logo-text">GEN-MAMA</h1>
+            </div>
+
+            <nav class="nav-group">
+                <h3 class="nav-header">Pipeline</h3>
+                <a class="nav-item active" data-view="dashboard">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a class="nav-item" data-view="variants">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <span>Exploración TCGA</span>
+                </a>
+                <a class="nav-item" data-view="structure">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    <span>Estructuras 3D</span>
+                </a>
+                <a class="nav-item" data-view="docking">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <span>Docking Molecular</span>
+                </a>
+            </nav>
+
+            <nav class="nav-group">
+                <h3 class="nav-header">Análisis</h3>
+                <a class="nav-item"><span>Reporte Final</span></a>
+                <a class="nav-item"><span>Docs API GDC</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span>Dataset: <strong>TCGA-BRCA</strong> activo</span>
+                </div>
+                <div class="user-actions">
+                    <button id="btn-sync" class="status-indicator" style="cursor: pointer; background: var(--accent); color: white; border: none;">
+                        <span>Sincronizar Cloud</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Dashboard View -->
+                <section id="view-dashboard" class="view active">
+                    <div class="view-header fade-up" style="animation-delay: 0.1s;">
+                        <h2 class="view-title">Estado del Pipeline</h2>
+                        <p class="view-subtitle">Monitoreo en tiempo real de la ingesta y priorización de variantes.</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="card fade-up" style="animation-delay: 0.2s;">
+                            <div class="stat-header">
+                                <span class="stat-label">Pacientes</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width: 16px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            </div>
+                            <div class="stat-value">1,084</div>
+                            <div class="stat-change pos">↑ Cohorte completa</div>
+                        </div>
+                        <div class="card fade-up" style="animation-delay: 0.3s;">
+                            <div class="stat-header">
+                                <span class="stat-label">Variantes SSM</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width: 16px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            </div>
+                            <div class="stat-value">2,000</div>
+                            <div class="stat-change">Muestra filtrada (missense)</div>
+                        </div>
+                        <div class="card fade-up" style="animation-delay: 0.4s;">
+                            <div class="stat-header">
+                                <span class="stat-label">Genes Clave</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width: 16px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                            </div>
+                            <div class="stat-value">10</div>
+                            <div class="stat-change pos">Top hotspots</div>
+                        </div>
+                    </div>
+
+                    <div class="card pipeline-card fade-up" style="animation-delay: 0.5s;">
+                        <div class="pipeline-steps">
+                            <div class="step done">
+                                <div class="step-circle">M1</div>
+                                <div class="step-label">Ingesta<br>GDC API</div>
+                            </div>
+                            <div class="step done">
+                                <div class="step-circle">M2</div>
+                                <div class="step-label">Priorización<br>Variantes</div>
+                            </div>
+                            <div class="step active">
+                                <div class="step-circle">M3</div>
+                                <div class="step-label">Predicción<br>Estructural</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-circle">M4</div>
+                                <div class="step-label">Docking<br>Vina</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-circle">M5</div>
+                                <div class="step-label">Reporte<br>Final</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Variants View -->
+                <section id="view-variants" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title">Exploración TCGA</h2>
+                        <p class="view-subtitle">Resultados del análisis de mutaciones missense en la cohorte BRCA.</p>
+                    </div>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Gen</th>
+                                    <th>Variante proteica</th>
+                                    <th>Frecuencia</th>
+                                    <th>Relevancia</th>
+                                </tr>
+                            </thead>
+                            <tbody id="variants-body">
+                                <!-- Data will be populated by app.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Other views placeholders -->
+                <section id="view-structure" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title">Estructuras 3D</h2>
+                        <p class="view-subtitle">Modelado molecular mediante AlphaFold Server y Boltz-1.</p>
+                    </div>
+                    <div class="card">
+                        <p style="color: var(--text-secondary)">Módulo en ejecución. Esperando resultados de Colab...</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
