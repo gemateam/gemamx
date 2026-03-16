@@ -82,6 +82,7 @@ body {
     letter-spacing: -0.025em;
     background: linear-gradient(to right, #fff, #94a3b8);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -479,4 +480,97 @@ body {
 .tooltip-trigger:hover::after {
     opacity: 1;
     visibility: visible;
+}
+/* Structural Analysis View Styles */
+.fasta-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.fasta-btn:hover {
+    background: rgba(13, 115, 119, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.fasta-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+#struct-details b {
+    color: var(--accent);
+}
+
+#pdbe-molstar-container {
+    background: #121212;
+    border-radius: 12px;
+}
+/* Analysis Cards & Metrics */
+.af-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.af-card-title {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.af-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+
+.af-card-row span:first-child {
+    color: var(--text-tertiary);
+}
+
+.plddt-bar-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    height: 6px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::before {
+    content: '';
+    width: 3px;
+    height: 15px;
+    background: var(--accent);
+    border-radius: 2px;
 }

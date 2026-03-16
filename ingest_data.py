@@ -22,17 +22,20 @@ MOLECULAR_PROFILE_ID = "brca_tcga_mutations"
 KEY_GENES = ["PIK3CA", "TP53", "ERBB2", "BRCA1", "BRCA2", "CDH1", "GATA3", "MAP3K1"]
 BASE_URL = "https://www.cbioportal.org/api"
 
-def get_gene_mapping():
-    print("Fetching gene mapping (Symbol -> EntrezID)...")
+def get_gene_mapping(entrez_ids):
+    print(f"Fetching mapping for {len(entrez_ids)} unique Gene IDs...")
     genes_map = {}
-    for gene in KEY_GENES:
-        url = f"{BASE_URL}/genes/{gene}"
-        res = requests.get(url)
+    url = f"{BASE_URL}/genes/fetch"
+    # cBioPortal supports fetching multiple genes via POST
+    chunk_size = 500
+    for i in range(0, len(entrez_ids), chunk_size):
+        chunk = [int(x) for x in entrez_ids[i:i + chunk_size] if pd.notna(x)]
+        if not chunk: continue
+        res = requests.post(url, json=chunk)
         if res.status_code == 200:
-            data = res.json()
-            entrez_id = data.get("entrezGeneId")
-            if entrez_id:
-                genes_map[entrez_id] = gene
+            genes_data = res.json()
+            for g in genes_data:
+                genes_map[g['entrezGeneId']] = g['hugoGeneSymbol']
     print(f"Mapped {len(genes_map)} genes.")
     return genes_map
 
@@ -78,7 +81,7 @@ def process_and_store(data, gene_map, total_samples):
     df = pd.DataFrame(data)
     print(f"Total mutations fetched: {len(df)}")
 
-    # Map entrezGeneId to Symbol
+    # Map entrezGeneId to Symbol for ALL genes
     df['hugo_symbol'] = df['entrezGeneId'].map(gene_map)
 
     # US-01 Columns mapping
@@ -92,16 +95,16 @@ def process_and_store(data, gene_map, total_samples):
     
     df = df.rename(columns=mapping)
 
-    # US-02: Filter Missense in Key Genes
-    print("Filtering key genes and missense variants...")
+    # US-02: Filter Missense in Key Genes for the RANKING and MongoDB
+    print("Filtering key genes and missense variants for Ranking...")
     filtered_df = df[
-        (df['hugo_symbol'].notnull()) & 
+        (df['hugo_symbol'].isin(KEY_GENES)) & 
         (df['variant_classification'].str.contains('Missense', case=False, na=False))
     ].copy()
     
-    print(f"Filtered mutations: {len(filtered_df)}")
+    print(f"Filtered mutations (Key Genes + Missense): {len(filtered_df)}")
 
-    # Store in MongoDB
+    # Store in MongoDB (Only filtered ones for Epic 1 focus)
     print("Storing filtered mutations in MongoDB...")
     mutations_col.delete_many({})
     if not filtered_df.empty:
@@ -125,7 +128,7 @@ def process_and_store(data, gene_map, total_samples):
         # Calculate Percentage and Metadata
         ranking['cohort_percentage'] = (ranking['frequency'] / total_samples) * 100
         
-        # Heuristic for classification (simple for now: Frequent Hotspots = Pathogenic)
+        # Heuristic for classification
         def classify(freq):
             if freq > 50: return "Patogénica"
             if freq > 10: return "Probable Patogénica"
@@ -140,10 +143,41 @@ def process_and_store(data, gene_map, total_samples):
         ranking_col.delete_many({})
         ranking_col.insert_many(ranking.to_dict('records'))
         print("Ranking stored in MongoDB.")
-    else:
-        print("No variants to rank.")
+
+    # US-06 & US-01: Exporting stats and raw data for Web UI
+    print("Exporting data for Web UI...")
+    
+    # Export for US-01: Full Consultation page (Showing all mapped mutations in the cohort)
+    raw_cols = ['hugo_symbol', 'variant_classification', 'protein_change', 'sample_id', 'chromosome', 'start_position']
+    available_cols = [c for c in raw_cols if c in df.columns]
+    raw_export = df[available_cols]
+    raw_export.to_json('data/raw_mutations.json', orient='records', indent=4)
+    print(f"Raw mutation data ({len(raw_export)} records) exported to data/raw_mutations.json")
+
+    # Stats for US-06: Plotly Dashboard
+    # For stats, we also use the full mapped df to show global distribution
+    gene_dist = df.groupby('hugo_symbol').size().sort_values(ascending=False).head(20).to_dict()
+    type_dist = df.groupby('variant_classification').size().to_dict()
+    
+    stats = {
+        "gene_distribution": gene_dist,
+        "type_distribution": type_dist,
+        "total_samples": total_samples,
+        "total_mutations": len(data)
+    }
+    
+    with open('data/mutation_stats.json', 'w', encoding='utf-8') as f:
+        json.dump(stats, f, indent=4)
+    print("Analytical stats exported to data/mutation_stats.json")
+
+def main():
+    raw_data, total_samples = fetch_mutations()
+    if raw_data:
+        # Get all unique Gene IDs to fetch symbols once
+        temp_df = pd.DataFrame(raw_data)
+        unique_ids = temp_df['entrezGeneId'].unique().tolist()
+        gene_map = get_gene_mapping(unique_ids)
+        process_and_store(raw_data, gene_map, total_samples)
 
 if __name__ == "__main__":
-    gene_map = get_gene_mapping()
-    raw_data, total_samples = fetch_mutations()
-    process_and_store(raw_data, gene_map, total_samples)
+    main()

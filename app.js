@@ -10,17 +10,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update active nav
             navItems.forEach(i => i.classList.remove('active'));
+            views.forEach(v => v.classList.remove('active'));
+            
             item.classList.add('active');
+            const targetView = document.getElementById(`view-${viewId}`);
+            if (targetView) targetView.classList.add('active');
 
-            // Update visible view
-            views.forEach(v => {
-                v.classList.remove('active');
-                if (v.id === `view-${viewId}`) {
-                    v.classList.add('active');
-                }
-            });
+            if (viewId === 'variants') {
+                loadData();
+            } else if (viewId === 'raw-data') {
+                currentIndex = 0; // Reset pagination
+                loadRawData();
+            } else if (viewId === 'analysis') {
+                if (window.loadAnalysisData) window.loadAnalysisData();
+            } else if (viewId === 'structure') {
+                if (window.initStructuralView) window.initStructuralView();
+            }
         });
     });
+
+    // Pagination for Raw Data
+    let rawDataStore = [];
+    let currentIndex = 0;
+    const PAGE_SIZE = 50;
+
+    async function loadRawData() {
+        const body = document.getElementById('raw-data-body');
+        const loadMoreBtn = document.getElementById('btn-load-more');
+        
+        if (currentIndex === 0) body.innerHTML = '';
+        
+        try {
+            if (rawDataStore.length === 0) {
+                const response = await fetch('data/raw_mutations.json');
+                rawDataStore = await response.json();
+            }
+
+            const chunk = rawDataStore.slice(currentIndex, currentIndex + PAGE_SIZE);
+            chunk.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><span class="gene-badge">${item.hugo_symbol}</span></td>
+                    <td>${item.variant_classification}</td>
+                    <td><code>${item.protein_change}</code></td>
+                    <td><span style="font-size:0.8rem; color:var(--text-tertiary)">${item.sample_id}</span></td>
+                    <td>${item.chromosome}</td>
+                    <td>${item.start_position}</td>
+                `;
+                body.appendChild(row);
+            });
+
+            currentIndex += PAGE_SIZE;
+            
+            if (currentIndex >= rawDataStore.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'inline-block';
+            }
+        } catch (err) {
+            console.error("Error loading raw data:", err);
+            body.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--accent)">Error al cargar dataset: ${err.message}</td></tr>`;
+        }
+    }
+
+    document.getElementById('btn-load-more').addEventListener('click', loadRawData);
 
     // Data Fetching Logic
     const tableBody = document.getElementById('variants-body');
@@ -64,8 +117,20 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                         </td>
                     `;
+                    row.addEventListener('click', () => {
+                        window.selectedVariantId = `${item.hugo_symbol}_${item.protein_change}`;
+                        // Visual feedback
+                        document.querySelectorAll('#variants-body tr').forEach(r => r.style.background = '');
+                        row.style.background = 'rgba(13, 115, 119, 0.1)';
+                    });
+                    
                     tableBody.appendChild(row);
                 });
+                
+                // Select first row by default
+                if (tableBody.firstChild) {
+                    tableBody.firstChild.click();
+                }
             }
         } catch (error) {
             console.error('Error loading variants data:', error);
@@ -85,4 +150,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1500);
         });
     }
+
+    // Analyze Structure Button
+    const btnAnalyze = document.getElementById('btn-analyze-structure');
+    if (btnAnalyze) {
+        btnAnalyze.addEventListener('click', () => {
+            showView('structure');
+        });
+    }
+
+    function showView(viewId) {
+        const navItem = document.querySelector(`.nav-item[data-view="${viewId}"]`);
+        if (navItem) navItem.click();
+    }
+
+    window.selectedVariantId = null;
 });

@@ -1,0 +1,30 @@
+{
+    "PIK3CA_H1047R": {
+        "wt_plddt": 87.4,
+        "wt_plddt_active": 91.2,
+        "mut_plddt": 84.1,
+        "rmsd_global": 1.84,
+        "rmsd_active": 3.21,
+        "rmsd_regions": [
+            {"region": "PIK3CA H1047R", "value": 3.21, "color": "#7F77DD"},
+            {"region": "TP53 R175H", "value": 4.18, "color": "#D85A30"},
+            {"region": "PIK3CA E545K", "value": 2.39, "color": "#7F77DD"},
+            {"region": "GATA3 P409fs", "value": 1.51, "color": "#378ADD"},
+            {"region": "CDH1 E243K", "value": 1.10, "color": "#378ADD"}
+        ]
+    },
+    "PIK3CA_E545K": {
+        "wt_plddt": 88.2,
+        "wt_plddt_active": 89.5,
+        "mut_plddt": 86.4,
+        "rmsd_global": 1.2,
+        "rmsd_active": 2.39,
+        "rmsd_regions": [
+            {"region": "PIK3CA H1047R", "value": 3.21, "color": "#7F77DD"},
+            {"region": "TP53 R175H", "value": 4.18, "color": "#D85A30"},
+            {"region": "PIK3CA E545K", "value": 2.39, "color": "#7F77DD"},
+            {"region": "GATA3 P409fs", "value": 1.51, "color": "#378ADD"},
+            {"region": "CDH1 E243K", "value": 1.10, "color": "#378ADD"}
+        ]
+    }
+}
