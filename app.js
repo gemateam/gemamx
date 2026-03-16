@@ -57,6 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                 ${item.classification || 'VUS'}
                             </span>
                         </td>
+                        <td>
+                            <div style="display: flex; gap: 5px;">
+                                <a href="data/fasta/${item.hugo_symbol}_WT.fasta" target="_blank" class="fasta-btn">WT</a>
+                                <a href="data/fasta/${item.hugo_symbol}_${item.protein_change}.fasta" target="_blank" class="fasta-btn" style="background: var(--accent); color: #fff;">MUT</a>
+                            </div>
+                        </td>
                     `;
                     tableBody.appendChild(row);
                 });
