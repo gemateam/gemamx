@@ -121,11 +121,13 @@
                     </div>
                 </section>
 
-                <!-- Variants View -->
-                <section id="view-variants" class="view">
                     <div class="view-header">
                         <h2 class="view-title">Exploración TCGA</h2>
-                        <p class="view-subtitle">Resultados del análisis de mutaciones missense en la cohorte BRCA.</p>
+                        <div style="display:flex; gap: 8px; margin-bottom: 12px;">
+                            <span style="font-size: 0.7rem; padding: 4px 8px; background: rgba(13, 115, 119, 0.2); color: var(--accent); border-radius: 4px; border: 1px solid var(--accent); font-weight: 600;">FILTRO: MISSENSE</span>
+                            <span style="font-size: 0.7rem; padding: 4px 8px; background: rgba(59, 130, 246, 0.1); color: #60a5fa; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.3); font-weight: 600;">8 GENES CLAVE</span>
+                        </div>
+                        <p class="view-subtitle">Resultados de la Épica 1: Ingesta de 1,084 pacientes y filtrado de relevancia clínica.</p>
                     </div>
                     <div class="data-table-container">
                         <table class="data-table">
@@ -135,7 +137,9 @@
                                     <th>Gen</th>
                                     <th>Variante proteica</th>
                                     <th>Frecuencia</th>
-                                    <th>Relevancia</th>
+                                    <th>% Cohorte</th>
+                                    <th>Posición Genómica</th>
+                                    <th>Clasificación</th>
                                 </tr>
                             </thead>
                             <tbody id="variants-body">

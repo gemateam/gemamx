@@ -50,9 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span style="font-size: 0.8rem; font-weight: 600;">${item.frequency}</span>
                             </div>
                         </td>
+                        <td style="font-weight: 600; color: #fff;">${item.cohort_percentage ? item.cohort_percentage.toFixed(1) + '%' : '0%'}</td>
+                        <td style="font-size: 0.85rem; color: var(--text-secondary);">Chr${item.chromosome}:${item.start_position}</td>
                         <td>
-                            <span style="font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; background: ${relevance === 'VUS' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; color: ${relevance === 'VUS' ? '#fbbf24' : '#f87171'}; font-weight: 600;">
-                                ${relevance}
+                            <span style="font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; background: ${item.classification === 'VUS' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; color: ${item.classification === 'VUS' ? '#fbbf24' : '#f87171'}; font-weight: 600;">
+                                ${item.classification || 'VUS'}
                             </span>
                         </td>
                     `;
