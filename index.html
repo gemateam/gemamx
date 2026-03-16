@@ -133,14 +133,14 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Rank</th>
-                                    <th>Gen</th>
-                                    <th>Variante proteica</th>
-                                    <th>Frecuencia</th>
-                                    <th>% Cohorte</th>
-                                    <th>Posición Genómica</th>
-                                    <th>Clasificación</th>
-                                    <th>Input AlphaFold</th>
+                                    <th data-tooltip="Posición de la variante en el Top-10 por frecuencia.">Rank</th>
+                                    <th data-tooltip="Símbolo oficial del gen (HUGO Gene Nomenclature).">Gen</th>
+                                    <th data-tooltip="Cambio en la secuencia de aminoácidos (ej. H1047R).">Variante proteica</th>
+                                    <th data-tooltip="Número total de pacientes en la cohorte TCGA-BRCA con esta variante.">Frecuencia</th>
+                                    <th data-tooltip="Prevalencia porcentual sobre el total de 1,108 pacientes.">% Cohorte</th>
+                                    <th data-tooltip="Ubicación en el genoma humano (Cromosoma y Posición en pb).">Posición Genómica</th>
+                                    <th data-tooltip="Categorización clínica basada en la patogenicidad conocida o estimada.">Clasificación</th>
+                                    <th data-tooltip="Archivos FASTA listos para simulación estructural de proteínas.">Input AlphaFold</th>
                                 </tr>
                             </thead>
                             <tbody id="variants-body">
