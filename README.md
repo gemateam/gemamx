@@ -1,20 +1,41 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# GEN-MAMA-MX: Analítica de Variantes en Cáncer de Mama (TCGA-BRCA)
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## 🧬 Introducción
+**GEN-MAMA-MX** es un ecosistema analítico diseñado para el estudio avanzado de mutaciones somáticas en pacientes con Cáncer de Mama, utilizando datos del proyecto **TCGA-BRCA** provenientes de la API del **GDC (Genomic Data Commons)**.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+El objetivo principal es cerrar la brecha entre la identificación de variantes genéticas y la comprensión de su impacto estructural, facilitando el descubrimiento de posibles mecanismos de resistencia y nuevos blancos terapéuticos.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## 🚀 Pipeline del Proyecto
+El proyecto se divide en módulos secuenciales automatizados:
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+1.  **M1: Ingesta y Priorización**: Descarga de variantes missense desde GDC, procesamiento con Pandas y priorización basada en frecuencia de mutación.
+2.  **M2: Análisis de Supervivencia**: Correlación de variantes con datos clínicos para evaluar impacto pronóstico (en desarrollo).
+3.  **M3: Generación de Secuencias**: Obtención de secuencias Wild-Type (WT) desde UniProt y síntesis _in silico_ de variantes mutadas.
+4.  **M4: Predicción Estructural**: Uso del modelo de vanguardia **Boltz-1** para predecir las estructuras PDB tanto de proteínas originales como mutadas.
+5.  **M5: Molecular Docking**: Evaluación de la afinidad unión-ligando para entender cómo las mutaciones afectan la interacción con fármacos.
+
+## 🛠️ Configuración en Google Colab
+Este repositorio está optimizado para ejecutarse en Google Colab con persistencia en Google Drive.
+
+### Instalación Rápida
+1.  Clona este repositorio o abre el notebook `01_tcga_exploration.ipynb`.
+2.  Ejecuta la celda **"🚀 Configuración Maestra"** para instalar dependencias y preparar el entorno.
+3.  **Reinicia el entorno** de ejecución (Runtime -> Restart runtime) para cargar las versiones correctas de Numpy y Pandas.
+4.  Usa la celda **"🔗 0. Conexión Rápida"** para restaurar el acceso a tus archivos en segundos en futuras sesiones.
+
+## 🧪 Tecnologías
+- **Core**: Python 3.12+, Pandas, Requests.
+- **Bioinformática**: Biopython, UniProt API, GDC API.
+- **IA/ML**: Boltz-1 (Structure Prediction).
+- **Entorno**: Google Colab & Google Drive.
+
+## 📈 Estado del Proyecto
+- [x] Ingesta de Datos GDC.
+- [x] Gestión de Persistencia en Drive.
+- [x] Generación de FASTA automatizada.
+- [x] Integración con Boltz-1.
+- [ ] Módulo de Docking completo.
+- [ ] Dashboards de visualización.
+
+---
+*Desarrollado para el avance de la medicina de precisión en oncología.*
