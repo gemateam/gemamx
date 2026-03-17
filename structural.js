@@ -142,24 +142,32 @@ function renderRMSDChart(regions) {
     });
 }
 
-async function loadModelRobustly(plugin, url) {
+async function loadModelRobustly(plugin, baseUrl) {
     if (!plugin || !plugin.visual) return;
-    try {
-        const resp = await fetch(url);
-        if (!resp.ok) { console.warn("PDB mirror missing:", url); return; }
-        
-        const pdbData = await resp.text();
-        
-        // Exact pattern from working version: customData with literal 'data'
-        await plugin.visual.update({
-            customData: {
-                data: pdbData,
-                format: 'pdb'
+    
+    // Try .cif first (Boltz-1 default), then .pdb
+    const formats = [
+        { ext: 'cif', fmt: 'mmcif', suffix: '_model_0.cif' },
+        { ext: 'cif', fmt: 'mmcif', suffix: '.cif' },
+        { ext: 'pdb', fmt: 'pdb', suffix: '_MUT.pdb' },
+        { ext: 'pdb', fmt: 'pdb', suffix: '.pdb' }
+    ];
+
+    for (const f of formats) {
+        const url = baseUrl.endsWith('_WT') ? `${baseUrl}${f.suffix.includes('MUT') ? '.pdb' : f.suffix}` : `${baseUrl}${f.suffix}`;
+        try {
+            const resp = await fetch(url);
+            if (resp.ok) {
+                const data = await resp.text();
+                await plugin.visual.update({
+                    customData: { data: data, format: f.ext === 'cif' ? 'mmcif' : 'pdb' }
+                }, true);
+                console.log(`Loaded structure: ${url} (${f.ext})`);
+                return;
             }
-        }, true);
-    } catch (e) {
-        console.warn("Molstar silent error:", e.message);
+        } catch (e) {}
     }
+    console.warn("No structure found for:", baseUrl);
 }
 
 // Global upload handler
