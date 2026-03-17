@@ -5,6 +5,21 @@
 
 El objetivo principal es cerrar la brecha entre la identificación de variantes genéticas y la comprensión de su impacto estructural, facilitando el descubrimiento de posibles mecanismos de resistencia y nuevos blancos terapéuticos.
 
+## 🖼️ Visual Showcase
+A continuación, se presentan capturas de pantalla de la interfaz de la aplicación GEN-MAMA-MX:
+
+### Dashboard Principal
+![Dashboard](docs/img/dashboard.png)
+*Monitoreo en tiempo real del estado del pipeline y métricas clave de la cohorte TCGA-BRCA.*
+
+### Exploración TCGA
+![Exploración TCGA](docs/img/exploration.png)
+*Listado priorizado de variantes missense con clasificación de patogenicidad y accesos directos a análisis estructural.*
+
+### Análisis Estructural (Boltz-1)
+![Análisis Estructural](docs/img/structural.png)
+*Comparativa estructural entre la proteína Wild-Type y la variante mutada (ej. PIK3CA H1047R) predicha por Boltz-1.*
+
 ## 🚀 Pipeline del Proyecto
 El proyecto se divide en módulos secuenciales automatizados:
 
