@@ -80,7 +80,11 @@ window.loadAnalysisData = async function() {
             }
         };
 
-        Plotly.newPlot('plot-types', typeData, typeLayout, { responsive: true, displayModeBar: false });
+        if (!typeLabels.length || !typeValues.length) {
+            plotTypes.innerHTML = '<p style="color:var(--text-tertiary); text-align:center; padding:40px;">Sin datos de tipo de variante disponibles.</p>';
+        } else {
+            Plotly.newPlot('plot-types', typeData, typeLayout, { responsive: true, displayModeBar: false });
+        }
 
     } catch (err) {
         console.error("Error al cargar analítica:", err);

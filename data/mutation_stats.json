@@ -19,20 +19,20 @@
         "USH2A": 46,
         "SPEN": 44,
         "RYR3": 43,
-        "OBSCN": 42
+        "NCOR1": 42
     },
     "type_distribution": {
-        "Frame_Shift_Del": 2843,
-        "Frame_Shift_Ins": 2320,
-        "In_Frame_Del": 574,
-        "In_Frame_Ins": 143,
         "Missense_Mutation": 48904,
         "Nonsense_Mutation": 4040,
-        "Nonstop_Mutation": 66,
-        "Splice_Region": 593,
+        "Frame_Shift_Del": 2843,
+        "Frame_Shift_Ins": 2320,
         "Splice_Site": 1317,
+        "Splice_Region": 593,
+        "In_Frame_Del": 574,
+        "In_Frame_Ins": 143,
+        "Nonstop_Mutation": 66,
         "Translation_Start_Site": 64
     },
-    "total_samples": 1108,
+    "total_samples": 982,
     "total_mutations": 60864
 }

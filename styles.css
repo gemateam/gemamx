@@ -574,3 +574,264 @@ body {
     background: var(--accent);
     border-radius: 2px;
 }
+
+/* Docking & Ranking Styles (Mockup Aligned) */
+.drug-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+}
+
+.drug-item:last-child { border-bottom: none; }
+
+.drug-rank {
+    width: 24px;
+    height: 24px;
+    background: var(--bg-tertiary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-tertiary);
+}
+
+.drug-rank.top {
+    background: var(--accent);
+    color: #fff;
+}
+
+.drug-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.drug-score {
+    font-family: monospace;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.drug-status {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.ds-fda { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+.ds-trial { background: rgba(59, 130, 246, 0.1); color: var(--info); }
+.ds-exp { background: rgba(255, 255, 255, 0.05); color: var(--text-tertiary); }
+
+.delta-neg {
+    color: var(--success);
+    font-weight: 700;
+}
+
+.reposition-card {
+    background: rgba(13, 115, 119, 0.05);
+    border: 1px solid rgba(13, 115, 119, 0.2);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.reposition-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+/* --- Professional 3D Viewer Toolbar --- */
+.viewer-controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 20000001 !important; /* One higher than force-expanded */
+    padding: 6px;
+    background: rgba(10, 10, 12, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.viewer-controls button {
+    width: 34px;
+    height: 34px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+}
+
+.viewer-controls button:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.viewer-controls .btn-sep {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 4px 0;
+}
+
+/* --- Selective Cleanup: Hiding native clutter --- */
+.msp-canvas-controls,
+.msp-plugin-content .msp-btn.msp-btn-overlay,
+.pdbe-molstar-overview,
+.msp-viewport-controls,
+.msp-control-group-wrapper,
+.msp-layout-region-left,
+.msp-layout-region-right,
+.msp-btn-overlay { /* Specific native zoom buttons often have this */
+    display: none !important;
+}
+
+/* Ensure parents of controls allow absolute positioning */
+#wt-viewer-panel, #mut-viewer-panel, #docking-viewer-container {
+    position: relative !important;
+}
+
+/* --- Total Immersion Expansion Fix --- */
+.force-expanded {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 20000000 !important;
+    background: #000 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* Ensure the canvas updates to fill the force-expanded container */
+.force-expanded canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.force-expanded .viewer-controls {
+    top: 20px;
+    right: 20px;
+}
+
+.force-expanded .viewer-toolbar {
+    z-index: 20000001 !important;
+    top: 20px;
+    left: 20px;
+}
+
+.no-structure-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 10, 12, 0.9);
+    z-index: 1000;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+    border: 1px dashed rgba(255,255,255,0.1);
+    margin: 10px;
+}
+
+/* --- Scientific Viewer Enhancements --- */
+.viewer-toolbar {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: flex;
+    gap: 6px;
+    background: rgba(10, 10, 12, 0.6);
+    backdrop-filter: blur(8px);
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 100;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 4px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding-right: 6px;
+    margin-right: 2px;
+}
+
+.toolbar-group:last-child {
+    border-right: none;
+    padding-right: 0;
+    margin-right: 0;
+}
+
+.t-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.t-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.t-btn.active {
+    background: var(--accent);
+    color: #fff;
+}
+
+.sync-status {
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--success);
+    background: rgba(16, 185, 129, 0.1);
+    padding: 2px 8px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    pointer-events: none;
+}
+
+.sync-status.off {
+    color: var(--text-tertiary);
+    background: rgba(255, 255, 255, 0.05);
+}

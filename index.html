@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEN-MAMA-MX | Pipeline de Precision Oncology</title>
+    <link rel="icon" href="data:,">
+    <!-- Plotly via CDN -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="https://www.ebi.ac.uk/pdbe/pdb-component-library/css/pdbe-molstar-1.2.1.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pdbe-molstar@3.2.0/build/pdbe-molstar.css">
 </head>
 <body>
     <div class="app-container">
@@ -50,7 +54,7 @@
 
             <nav class="nav-group">
                 <h3 class="nav-header">Análisis</h3>
-                <a class="nav-item"><span>Reporte Final</span></a>
+                <a class="nav-item" data-view="report"><span>Reporte Final</span></a>
                 <a class="nav-item"><span>Docs API GDC</span></a>
             </nav>
         </aside>
@@ -129,13 +133,31 @@
                         </div>
                     </div>
                 </section>
+
                 <!-- Variants View -->
                 <section id="view-variants" class="view">
                     <div class="view-header">
                         <h2 class="view-title">Exploración TCGA</h2>
-                        <div style="display:flex; gap: 8px; margin-bottom: 12px;">
-                            <span style="font-size: 0.7rem; padding: 4px 8px; background: rgba(13, 115, 119, 0.2); color: var(--accent); border-radius: 4px; border: 1px solid var(--accent); font-weight: 600;">FILTRO: MISSENSE</span>
-                            <span style="font-size: 0.7rem; padding: 4px 8px; background: rgba(59, 130, 246, 0.1); color: #60a5fa; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.3); font-weight: 600;">8 GENES CLAVE</span>
+                        <div style="display:flex; gap: 16px; margin-bottom: 20px; align-items: flex-end; background: rgba(255,255,255,0.03); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border); flex-wrap: wrap;">
+                            <div style="display:flex; flex-direction: column; gap: 6px;">
+                                <label style="font-size: 0.65rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Buscar Gen</label>
+                                <input type="text" id="search-gene" placeholder="Ej: PIK3CA, TP53..." style="background: var(--bg-tertiary); border: 1px solid var(--border); color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; width: 140px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+                            </div>
+                            <div style="display:flex; flex-direction: column; gap: 6px;">
+                                <label style="font-size: 0.65rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Variante Proteica</label>
+                                <input type="text" id="search-variant" placeholder="Ej: H1047, R248..." style="background: var(--bg-tertiary); border: 1px solid var(--border); color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; width: 140px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+                            </div>
+                            <div style="display:flex; flex-direction: column; gap: 6px;">
+                                <label style="font-size: 0.65rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Clasificación</label>
+                                <select id="filter-class" style="background: var(--bg-tertiary); border: 1px solid var(--border); color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; min-width: 120px; outline: none;">
+                                    <option value="ALL">Todas</option>
+                                    <option value="Pathogenic">Patogénicas</option>
+                                    <option value="VUS">VUS</option>
+                                </select>
+                            </div>
+                            <div style="margin-left: auto; align-self: center;">
+                                <span id="variant-count-badge" style="font-size: 0.75rem; padding: 6px 12px; background: rgba(13, 115, 119, 0.1); color: var(--accent); border-radius: 20px; border: 1px solid var(--accent); font-weight: 700; letter-spacing: 0.02em;">MOSTRANDO: 10</span>
+                            </div>
                         </div>
                         <p class="view-subtitle">Resultados de la Épica 1: Ingesta de 1,084 pacientes y filtrado de relevancia clínica.</p>
                     </div>
@@ -143,24 +165,24 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th><div class="tooltip-trigger" data-tooltip="Posición de la variante en el Top-10 por frecuencia." title="Posición de la variante en el Top-10 por frecuencia.">Rank</div></th>
-                                    <th><div class="tooltip-trigger" data-tooltip="Símbolo oficial del gen (HUGO Gene Nomenclature)." title="Símbolo oficial del gen (HUGO Gene Nomenclature).">Gen</div></th>
-                                    <th><div class="tooltip-trigger" data-tooltip="Cambio en la secuencia de aminoácidos (ej. H1047R)." title="Cambio en la secuencia de aminoácidos (ej. H1047R).">Variante proteica</div></th>
-                                    <th><div class="tooltip-trigger" data-tooltip="Número total de pacientes en la cohorte TCGA-BRCA con esta variante." title="Número total de pacientes en la cohorte TCGA-BRCA con esta variante.">Frecuencia</div></th>
-                                    <th><div class="tooltip-trigger" data-tooltip="Prevalencia porcentual sobre el total de 1,108 pacientes." title="Prevalencia porcentual sobre el total de 1,108 pacientes.">% Cohorte</div></th>
-                                    <th><div class="tooltip-trigger" data-tooltip="Ubicación en el genoma humano (Cromosoma y Posición en pb)." title="Ubicación en el genoma humano (Cromosoma y Posición en pb).">Posición Genómica</div></th>
-                                    <th><div class="tooltip-trigger" data-tooltip="Categorización clínica basada en la patogenicidad conocida o estimada." title="Categorización clínica basada en la patogenicidad conocida o estimada.">Clasificación</div></th>
-                                    <th><div class="tooltip-trigger" data-tooltip="Archivos FASTA listos para simulación estructural de proteínas." title="Archivos FASTA listos para simulación estructural de proteínas.">Input AlphaFold</div></th>
+                                    <th>Rank</th>
+                                    <th>Gen</th>
+                                    <th>Variante proteica</th>
+                                    <th>Frecuencia</th>
+                                    <th>% Cohorte</th>
+                                    <th>Posición Genómica</th>
+                                    <th>Clasificación</th>
+                                    <th>Input AlphaFold</th>
                                 </tr>
                             </thead>
                             <tbody id="variants-body">
-                                <!-- Data will be populated by app.js -->
+                                <!-- Data populated by app.js -->
                             </tbody>
                         </table>
                     </div>
                     <div style="display:flex; gap:12px; margin-top:20px;">
                         <button id="btn-analyze-structure" class="fasta-btn active" style="padding: 12px 24px;">Analizar estructuras →</button>
-                        <button class="fasta-btn" onclick="alert('¿Qué es VUS? Variant of Uncertain Significance. Significa que aún no hay evidencia suficiente para clasificarla como benigna o patogénica.')">¿Qué es VUS? ↗</button>
+                        <button class="fasta-btn">¿Qué es VUS? ↗</button>
                     </div>
                 </section>
 
@@ -168,18 +190,14 @@
                 <section id="view-raw-data" class="view">
                     <div class="view-header">
                         <h2 class="view-title">Dataset Base: TCGA-BRCA</h2>
-                        <div style="display:flex; gap: 8px; margin-bottom: 12px;">
-                            <span style="font-size: 0.7rem; padding: 4px 8px; background: rgba(13, 115, 119, 0.2); color: var(--accent); border-radius: 4px; border: 1px solid var(--accent); font-weight: 600;">STATUS: 1,084 PACIENTES</span>
-                            <span style="font-size: 0.7rem; padding: 4px 8px; background: rgba(59, 130, 246, 0.1); color: #60a5fa; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.3); font-weight: 600;">SOURCE: cBioPortal</span>
-                        </div>
-                        <p class="view-subtitle">Consulta de las mutaciones somáticas descargadas (Filtrado Missense en Genes Clave).</p>
+                        <p class="view-subtitle">Consulta de las mutaciones somáticas descargadas.</p>
                     </div>
                     <div class="data-table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>Gen</th>
-                                    <th>Clasificación Variante</th>
+                                    <th>Clasificación</th>
                                     <th>Cambio Proteico</th>
                                     <th>ID Muestra</th>
                                     <th>Chr</th>
@@ -187,7 +205,7 @@
                                 </tr>
                             </thead>
                             <tbody id="raw-data-body">
-                                <!-- Data will be populated by app.js -->
+                                <!-- Data populated by app.js -->
                             </tbody>
                         </table>
                         <div id="raw-data-footer" style="padding: 20px; text-align: center;">
@@ -200,15 +218,15 @@
                 <section id="view-analysis" class="view">
                     <div class="view-header">
                         <h2 class="view-title">Análisis Avanzado</h2>
-                        <p class="view-subtitle">Distribución de mutaciones por gen y tipo (Plotly Intelligence).</p>
+                        <p class="view-subtitle">Distribución de mutaciones por gen y tipo.</p>
                     </div>
                     <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
                         <div class="card" style="min-height: 400px;">
-                            <h3 class="stat-label" style="margin-bottom: 20px;">Frecuencia por Gen Top-20</h3>
+                            <h3 class="stat-label">Frecuencia por Gen Top-20</h3>
                             <div id="plot-genes" style="width: 100%; height: 350px;"></div>
                         </div>
                         <div class="card" style="min-height: 400px;">
-                            <h3 class="stat-label" style="margin-bottom: 20px;">Distribución de Tipos</h3>
+                            <h3 class="stat-label">Distribución de Tipos</h3>
                             <div id="plot-types" style="width: 100%; height: 350px;"></div>
                         </div>
                     </div>
@@ -222,40 +240,78 @@
                     </div>
 
                     <div class="two-col" style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                        <!-- WT Panel -->
                         <div class="card" style="padding: 20px;">
                             <div class="section-title">Proteína wild-type (WT)</div>
-                            <div id="wt-viewer-panel" style="background: rgba(0,0,0,0.2); border-radius: 8px; height: 250px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                            <div id="wt-viewer-panel" style="background: rgba(0,0,0,0.2); border-radius: 8px; height: 250px; margin-bottom: 15px; position: relative; overflow: hidden;">
                                 <div id="wt-molstar-container" style="width:100%; height:100%;"></div>
-                                <div class="plddt-badge" id="wt-plddt-label" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">
-                                    pLDDT: --
+                                <div class="viewer-toolbar">
+                                    <div class="toolbar-group">
+                                        <button class="t-btn active" onclick="setRepresentation('wt', 'cartoon')">Cartoon</button>
+                                        <button class="t-btn" onclick="setRepresentation('wt', 'surface')">Surf</button>
+                                        <button class="t-btn" onclick="setRepresentation('wt', 'ballstick')">Ball</button>
+                                    </div>
+                                    <button class="t-btn" onclick="exportViewerImage('wt')" title="Exportar PNG">📸</button>
                                 </div>
+                                <div class="viewer-controls">
+                                    <button onclick="zoomViewer('wt', 1.2)" title="Zoom In">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    </button>
+                                    <button onclick="zoomViewer('wt', 0.8)" title="Zoom Out">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    </button>
+                                    <div class="btn-sep"></div>
+                                    <button onclick="resetViewer('wt')" title="Reset Cámara">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                                    </button>
+                                    <button onclick="toggleExpand('wt')" title="Expandir/Contraer">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="plddt-badge" id="wt-plddt-label" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">pLDDT: --</div>
+                                <div class="sync-status" id="wt-sync-status">🔗 SinC</div>
                             </div>
                             <div class="af-card">
-                                <div class="af-card-title">AlphaFold Server</div>
-                                <div class="af-card-row"><span>pLDDT promedio</span><span id="wt-avg-plddt" style="font-weight:600;">--</span></div>
-                                <div class="af-card-row"><span>pLDDT sitio activo</span><span id="wt-active-plddt" style="font-weight:600;">--</span></div>
-                                <div class="af-card-row"><span>Confianza</span><span id="wt-confidence" style="color: var(--success); font-weight:600;">--</span></div>
+                                <div class="af-card-row"><span>pLDDT promedio</span><span id="wt-avg-plddt">--</span></div>
+                                <div class="af-card-row"><span>Confianza</span><span id="wt-confidence" style="color: var(--success);">--</span></div>
                                 <div class="plddt-bar-container" style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 10px; overflow: hidden;">
                                     <div id="wt-plddt-bar" style="height: 100%; width: 0%; background: var(--success); transition: width 0.5s;"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- MUT Panel -->
                         <div class="card" style="padding: 20px;">
                             <div class="section-title" id="mut-panel-title">Proteína mutada</div>
-                            <div id="mut-viewer-panel" style="background: rgba(0,0,0,0.2); border-radius: 8px; height: 250px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                            <div id="mut-viewer-panel" style="background: rgba(0,0,0,0.2); border-radius: 8px; height: 250px; margin-bottom: 15px; position: relative; overflow: hidden;">
                                 <div id="mut-molstar-container" style="width:100%; height:100%;"></div>
-                                <div class="plddt-badge" id="mut-plddt-label" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">
-                                    pLDDT: --
+                                <div class="viewer-toolbar">
+                                    <div class="toolbar-group">
+                                        <button class="t-btn active" onclick="setRepresentation('mut', 'cartoon')">Cartoon</button>
+                                        <button class="t-btn" onclick="setRepresentation('mut', 'surface')">Surf</button>
+                                        <button class="t-btn" onclick="setRepresentation('mut', 'ballstick')">Ball</button>
+                                    </div>
+                                    <button class="t-btn" onclick="exportViewerImage('mut')" title="Exportar PNG">📸</button>
                                 </div>
+                                <div class="viewer-controls">
+                                    <button onclick="zoomViewer('mut', 1.2)" title="Zoom In">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    </button>
+                                    <button onclick="zoomViewer('mut', 0.8)" title="Zoom Out">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    </button>
+                                    <div class="btn-sep"></div>
+                                    <button onclick="resetViewer('mut')" title="Reset Cámara">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                                    </button>
+                                    <button onclick="toggleExpand('mut')" title="Expandir/Contraer">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="plddt-badge" id="mut-plddt-label" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">pLDDT: --</div>
+                                <div class="sync-status" id="mut-sync-status">🔗 SinC</div>
                             </div>
                             <div class="af-card">
-                                <div class="af-card-title">Boltz-1 (MIT License)</div>
-                                <div class="af-card-row"><span>pLDDT promedio</span><span id="mut-avg-plddt" style="font-weight:600;">--</span></div>
-                                <div class="af-card-row"><span>RMSD global</span><span id="rmsd-global" style="font-weight:600;">--</span></div>
-                                <div class="af-card-row"><span>RMSD sitio activo</span><span id="rmsd-active" style="color: var(--accent); font-weight:600;">--</span></div>
+                                <div class="af-card-row"><span>RMSD global</span><span id="rmsd-global">--</span></div>
+                                <div class="af-card-row"><span>RMSD sitio activo</span><span id="rmsd-active" style="color: var(--accent);">--</span></div>
                                 <div class="plddt-bar-container" style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 10px; overflow: hidden;">
                                     <div id="mut-plddt-bar" style="height: 100%; width: 0%; background: var(--accent); transition: width 0.5s;"></div>
                                 </div>
@@ -263,26 +319,193 @@
                         </div>
                     </div>
 
-                    <!-- RMSD Chart Block -->
                     <div class="card" style="padding: 20px;">
                         <h3 class="section-title">RMSD por región — Top-5 variantes</h3>
-                        <div id="rmsd-chart-container" style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
-                            <!-- Will be populated -->
-                        </div>
+                        <div id="rmsd-chart-container" style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;"></div>
                     </div>
 
                     <div class="controls-area" style="margin-top: 20px; display: flex; gap: 12px; align-items: center;">
                         <select id="struct-variant-select" class="fasta-btn" style="width: 250px; text-align: left;">
                             <option value="">-- Cambiar Variante --</option>
                         </select>
+                        <button class="fasta-btn" id="btn-scientific-mode" style="border: 1px solid var(--accent); color: var(--accent);">🔬 Modo Científico: OFF</button>
+                        <button class="fasta-btn" onclick="toggleSuperposition()" style="border: 1px solid var(--info); color: var(--info);">🔄 Superponer WT/Mut</button>
                         <button class="fasta-btn active" id="btn-next-docking">Continuar con docking →</button>
-                        <button class="fasta-btn" onclick="alert('Interpretando RMSD: Un valor > 2.0Å indica cambios conformacionales significativos que pueden alterar la afinidad de unión de fármacos.')">Interpretar RMSD ↗</button>
-                        
-                        <div style="margin-left: auto; display: flex; gap: 8px;">
-                            <input type="file" id="pdb-upload" accept=".pdb" style="display:none">
-                            <button onclick="document.getElementById('pdb-upload').click()" class="fasta-btn" style="border-style:dashed;">
-                                📁 Subir PDB
-                            </button>
+                    </div>
+                </section>
+
+                <!-- Docking View -->
+                <section id="view-docking" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title">Docking molecular — <span id="docking-variant-label">Cargando...</span></h2>
+                        <p class="view-subtitle">AutoDock Vina · 48 ligandos evaluados · ChEMBL + DrugBank Open</p>
+                    </div>
+
+                    <div class="metrics" style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
+                        <div class="metric-card">
+                            <div class="metric-label">Ligandos evaluados</div>
+                            <div class="metric-value">48</div>
+                            <div class="metric-sub">ChEMBL + DrugBank</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Mejor score Vina</div>
+                            <div class="metric-value" id="top-vina-score" style="color: var(--success);">--</div>
+                            <div class="metric-sub">kcal/mol</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Fármacos FDA</div>
+                            <div class="metric-value">6</div>
+                            <div class="metric-sub">aprobados en lista</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Repositionables</div>
+                            <div class="metric-value" id="repro-count" style="color: var(--success);">--</div>
+                            <div class="metric-sub">Δscore ≤ −1.0</div>
+                        </div>
+                    </div>
+
+                    <div class="two-col" style="display:grid; grid-template-columns: 3fr 2fr; gap: 20px;">
+                        <div class="card" style="padding: 20px;">
+                            <div class="section-title">Ranking Top-10 inhibidores</div>
+                            <div id="docking-ranking-list" style="display: flex; flex-direction: column; gap: 4px;"></div>
+                        </div>
+
+                        <div class="card" style="padding: 20px;">
+                            <div class="section-title">Fármacos repositionables detectados</div>
+                            <div id="reposition-list"></div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top: 20px; padding: 20px;">
+                        <h3 class="section-title">Visualización de Pose de Unión</h3>
+                        <div id="docking-viewer-container" style="background: rgba(0,0,0,0.2); border-radius: 8px; height: 400px; margin-top: 15px; position: relative; overflow: hidden;">
+                            <div id="docking-molstar-container" style="width:100%; height:100%;"></div>
+                            <div class="viewer-controls">
+                                <button onclick="zoomViewer('docking', 1.2)" title="Zoom In">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </button>
+                                <button onclick="zoomViewer('docking', 0.8)" title="Zoom Out">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </button>
+                                <div class="btn-sep"></div>
+                                <button onclick="resetViewer('docking')" title="Reset Cámara">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                                </button>
+                                <button onclick="toggleExpand('docking')" title="Expandir/Contraer">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Report View -->
+                <section id="view-report" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title">Reporte de análisis — <span id="report-variant-label">Cargando...</span></h2>
+                        <p class="view-subtitle">Generado automáticamente por pipeline.py · M5 Report Generator</p>
+                    </div>
+
+                    <div class="report-section" style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; margin-bottom: 20px; background: rgba(255,255,255,0.02);">
+                        <div class="section-title">Perfil de la variante</div>
+                        <div id="report-profile-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="info-item"><span class="stat-label">Gen</span><span class="info-item-value" id="report-gene" style="font-weight: 600;">--</span></div>
+                            <div class="info-item"><span class="stat-label">Variante proteica</span><span class="info-item-value" id="report-change" style="font-family: monospace;">--</span></div>
+                            <div class="info-item"><span class="stat-label">Frecuencia en cohorte</span><span class="info-item-value" id="report-freq">--</span></div>
+                            <div class="info-item"><span class="stat-label">Clasificación clínica</span><span id="report-class" style="font-weight: 600;">--</span></div>
+                        </div>
+                    </div>
+
+                    <div class="report-section" style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; margin-bottom: 20px; background: rgba(255,255,255,0.02);">
+                        <div class="section-title">Análisis estructural</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="info-item"><span class="stat-label">pLDDT WT</span><span class="info-item-value" id="report-wt-plddt">--</span></div>
+                            <div class="info-item"><span class="stat-label">pLDDT Mutada</span><span class="info-item-value" id="report-mut-plddt">--</span></div>
+                            <div class="info-item"><span class="stat-label">RMSD Sitio Activo</span><span class="info-item-value" id="report-rmsd" style="color: var(--danger);">--</span></div>
+                            <div class="info-item"><span class="stat-label">Confianza Estructural</span><span class="info-item-value" style="color: var(--success);">ALTA</span></div>
+                        </div>
+                    </div>
+
+                    <div class="report-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <!-- Columna Izquierda: Perfil y Gráficos -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="card" style="padding: 20px; height: auto;">
+                            <div class="section-title">Perfil Genómico y Estructural</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                                <div class="metric-box">
+                                    <div class="metric-label">Frecuencia CoHorte</div>
+                                    <div class="metric-value highlight" id="report-freq">--</div>
+                                </div>
+                                <div class="metric-box">
+                                    <div class="metric-label">Clasificación</div>
+                                    <div class="metric-value classification" id="report-class">--</div>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="metric-box" style="background: rgba(46, 204, 113, 0.05); border: 1px solid rgba(46, 204, 113, 0.2);">
+                                    <div class="metric-label" style="color: var(--success);">pLDDT WT Base</div>
+                                    <div class="metric-value" id="report-wt-plddt" style="font-family: monospace;">--</div>
+                                </div>
+                                <div class="metric-box" style="background: rgba(231, 76, 60, 0.05); border: 1px solid rgba(231, 76, 60, 0.2);">
+                                    <div class="metric-label" style="color: var(--danger);">pLDDT Mutante</div>
+                                    <div class="metric-value" id="report-mut-plddt" style="font-family: monospace;">--</div>
+                                </div>
+                                <div class="metric-box" style="grid-column: span 2;">
+                                    <div class="metric-label">Impacto Estructural (RMSD)</div>
+                                    <div class="metric-value highlight" id="report-rmsd" style="font-size: 1.5rem; color: #ff9e0a;">--</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gráfico 1: Comparativa de pLDDT / Estabilidad -->
+                        <div class="card" style="padding: 20px;">
+                            <div class="section-title">Estabilidad WT vs Mutante</div>
+                            <div id="plotly-wt-mut-comp" style="width: 100%; height: 250px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Ranking y Distribución -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="card" style="padding: 20px; align-self: start; width: 100%;">
+                            <div class="section-title">Síntesis Diagnóstica Molecular</div>
+                            <div class="report-findings" id="report-findings" style="line-height: 1.6; color: var(--text-secondary); font-size: 0.95rem;">
+                                Generando síntesis basada en predicciones in-silico y datos clínicos...
+                            </div>
+                        </div>
+
+                        <!-- Gráfico 2: Distribución de Docking -->
+                        <div class="card" style="padding: 20px;">
+                            <div class="section-title">Distribución de Docking (kcal/mol)</div>
+                            <div id="plotly-score-dist" style="width: 100%; height: 200px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ranking Interactivo Table -->
+                <div class="card" style="padding: 20px; margin-top: 20px;">
+                    <div class="section-title">Ranking Ordenable de Fármacos Evaluados</div>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem;" id="interactive-drug-table">
+                            <thead>
+                                <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); text-align: left; cursor: pointer;">
+                                    <th style="padding: 10px;" onclick="sortTable(0)">Rank ↕</th>
+                                    <th style="padding: 10px;" onclick="sortTable(1)">Fármaco ↕</th>
+                                    <th style="padding: 10px;" onclick="sortTable(2)">Target ↕</th>
+                                    <th style="padding: 10px;" onclick="sortTable(3)">Afinidad Vina ↕</th>
+                                    <th style="padding: 10px;" onclick="sortTable(4)">Afinidad DiffDock ↕</th>
+                                    <th style="padding: 10px;" onclick="sortTable(5)">Estado Regul. ↕</th>
+                                    <th style="padding: 10px;" onclick="sortTable(6)">Δ Reposición ↕</th>
+                                </tr>
+                            </thead>
+                            <tbody id="report-drug-table-body">
+                                <!-- Filas de tabla... -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                    <div style="display: flex; gap: 12px; margin-top: 20px;">
+                            <button class="fasta-btn active" onclick="window.print()">Exportar PDF</button>
+                            <button class="fasta-btn">Sincronizar Clínica</button>
                         </div>
                     </div>
                 </section>
@@ -291,9 +514,11 @@
     </div>
 
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="https://www.ebi.ac.uk/pdbe/pdb-component-library/js/pdbe-molstar-plugin-1.2.1.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pdbe-molstar@3.2.0/build/pdbe-molstar-plugin.js"></script>
     <script src="app.js"></script>
     <script src="analysis.js"></script>
     <script src="structural.js"></script>
+    <script src="docking.js"></script>
+    <script src="report.js"></script>
 </body>
 </html>

@@ -43,3 +43,12 @@ ingest_output.txt
 # OS
 .DS_Store
 Thumbs.db
+
+# GEMAMX Specific
+vina123.exe
+data/docking/results/
+data/docking/ligands/
+data/docking/receptors/
+data/docking/complex/
+*.pdbqt
+_pik3ca_patch.txt
