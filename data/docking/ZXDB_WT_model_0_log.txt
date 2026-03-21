@@ -1,0 +1,3 @@
+Docking Log for ZXDB_WT_model_0
+Affinity: -7.8 kcal/mol
+Status: SUCCESS

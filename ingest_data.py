@@ -19,7 +19,11 @@ except Exception as e:
 # Configuration
 STUDY_ID = "brca_tcga"
 MOLECULAR_PROFILE_ID = "brca_tcga_mutations"
-KEY_GENES = ["PIK3CA", "TP53", "ERBB2", "BRCA1", "BRCA2", "CDH1", "GATA3", "MAP3K1"]
+KEY_GENES = [
+    "PIK3CA", "TP53", "ERBB2", "BRCA1", "BRCA2",   # Tier 1: accionables
+    "CDH1", "GATA3", "MAP3K1", "KMT2C", "PTEN",     # Tier 2: drivers frecuentes
+    "RB1", "ARID1A", "SF3B1", "AKT1", "CBFB"        # Tier 3: relevantes TCGA-BRCA
+]
 BASE_URL = "https://www.cbioportal.org/api"
 
 def get_gene_mapping(entrez_ids):
@@ -123,22 +127,32 @@ def process_and_store(data, gene_map, total_samples):
         counts = filtered_df.groupby(['hugo_symbol', 'protein_change']).size().reset_index(name='frequency')
         ranking = ranking.merge(counts, on=['hugo_symbol', 'protein_change'])
         
-        ranking = ranking.sort_values(by='frequency', ascending=False).head(10)
+        ranking = ranking.sort_values(by='frequency', ascending=False).head(20)
         
         # Calculate Percentage and Metadata
         ranking['cohort_percentage'] = (ranking['frequency'] / total_samples) * 100
         
-        # Heuristic for classification
-        def classify(freq):
-            if freq > 50: return "Patogénica"
-            if freq > 10: return "Probable Patogénica"
-            return "VUS"
+        # Improved classification based on cohort percentage
+        def classify(freq, cohort_pct):
+            if cohort_pct >= 5.0:  return "Patogénica"           # ≥5% cohorte
+            if cohort_pct >= 1.0:  return "Probable Patogénica"  # 1-5%
+            if cohort_pct >= 0.5:  return "VUS"                  # 0.5-1%
+            return "Baja Frecuencia"                              # <0.5%
             
-        ranking['classification'] = ranking['frequency'].apply(classify)
+        ranking['classification'] = ranking.apply(
+            lambda r: classify(r['frequency'], r['cohort_percentage']), axis=1
+        )
         ranking['rank'] = range(1, len(ranking) + 1)
         
-        print("Top 10 Variants with Metrics:")
+        print(f"Top {len(ranking)} Variants with Metrics:")
         print(ranking)
+
+        # Export for Web UI Ranking (TCGA Exploration page)
+        ranking_export = ranking[['hugo_symbol', 'protein_change', 'chromosome', 
+                                   'start_position', 'frequency', 'cohort_percentage', 
+                                   'classification', 'rank']].copy()
+        ranking_export.to_json('data/top_variants.json', orient='records', indent=4)
+        print(f"Top variants exported to data/top_variants.json ({len(ranking_export)} records)")
 
         ranking_col.delete_many({})
         ranking_col.insert_many(ranking.to_dict('records'))

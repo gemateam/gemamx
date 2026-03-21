@@ -416,9 +416,73 @@ body {
 }
 
 @media (max-width: 1024px) {
-    .sidebar { width: 80px; }
-    .logo-text, .nav-header, .nav-item span { display: none; }
-    .nav-item { justify-content: center; }
+    .sidebar { 
+        position: fixed;
+        left: -260px; /* Force hide */
+        top: 0;
+        bottom: 0;
+        transition: all 0.3s ease;
+        z-index: 2000;
+        width: 260px;
+    }
+    .sidebar.active {
+        left: 0;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    }
+    .main-content { 
+        margin-left: 0 !important;
+        width: 100%;
+    }
+    .top-bar { padding: 0 20px; }
+    .mobile-menu-btn { display: flex; }
+}
+
+@media (max-width: 768px) {
+    .stats-grid { grid-template-columns: 1fr !important; }
+    .two-col, .grid-two-col, .report-content, .grid-docking { 
+        grid-template-columns: 1fr !important; 
+    }
+    .metrics, .grid-metrics, .metric-box-grid { 
+        grid-template-columns: repeat(2, 1fr) !important; 
+    }
+    .content-area { padding: 20px; }
+    .view-title { font-size: 1.5rem; }
+}
+
+@media (max-width: 540px) {
+    .metrics, .grid-metrics, .metric-box-grid { 
+        grid-template-columns: 1fr !important; 
+    }
+    .viewer-toolbar { flex-direction: column; }
+    .top-bar { height: auto; padding: 10px 20px; flex-direction: column; gap: 10px; }
+    .user-actions { width: 100%; }
+    #btn-sync { width: 100%; justify-content: center; }
+}
+
+/* Utility classes for grids formerly inlined */
+.grid-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-docking { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; }
+.grid-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+.metric-box-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+.mobile-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Tooltip System */

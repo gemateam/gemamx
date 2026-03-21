@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEMA MX | Pipeline de Precision Oncology</title>
+    <link rel="icon" href="data:,">
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pdbe-molstar@3.2.0/build/pdbe-molstar.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Overlay móvil -->
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+        <aside class="sidebar">
+            <!-- Botón cerrar (solo móvil) -->
+            <div class="sidebar-close-btn">
+                <span class="scb-label">Menú</span>
+                <button onclick="closeSidebar()" aria-label="Cerrar menú">&times;</button>
+            </div>
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 20px;">
+                        <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93"/>
+                    </svg>
+                </div>
+                <h1 class="logo-text">GEMA MX</h1>
+            </div>
+            <nav class="nav-group">
+                <h3 class="nav-header">Pipeline</h3>
+                <a class="nav-item active" data-view="dashboard">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a class="nav-item" data-view="variants">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <span>Exploración TCGA</span>
+                </a>
+                <a class="nav-item" data-view="raw-data">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <span>Dataset Base</span>
+                </a>
+                <a class="nav-item" data-view="analysis">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+                    <span>Análisis Avanzado</span>
+                </a>
+                <a class="nav-item" data-view="structure">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><path d="M7 14c-.83 0-1.5-.67-1.5-1.5S6.17 11 7 11s1.5.67 1.5 1.5S7.83 14 7 14z"></path><path d="M17 14c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"></path></svg>
+                    <span>Análisis Estructural</span>
+                </a>
+                <a class="nav-item" data-view="docking">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <span>Docking Molecular</span>
+                </a>
+            </nav>
+            <nav class="nav-group">
+                <h3 class="nav-header">Análisis</h3>
+                <a class="nav-item" data-view="report"><span>Reporte Final</span></a>
+                <a class="nav-item" data-view="gdc-docs">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <span>Docs API GDC</span>
+                </a>
+            </nav>
+            <nav class="nav-group">
+                <h3 class="nav-header">Proyecto</h3>
+                <a class="nav-item" data-view="about">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span>Sobre el Proyecto</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div style="display:flex;align-items:center;">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    </button>
+                    <div class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span>Dataset: <strong>TCGA-BRCA</strong> activo</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+
+                <!-- ══════════════════════════════════════════════════ -->
+                <!-- DASHBOARD VIEW — Resumen ejecutivo real           -->
+                <!-- ══════════════════════════════════════════════════ -->
+                <section id="view-dashboard" class="view active">
+                    <div class="view-header fade-up">
+                        <h2 class="view-title">Estado del Pipeline</h2>
+                        <p class="view-subtitle">Resumen ejecutivo del proyecto GEMA MX.</p>
+                    </div>
+
+                    <!-- KPI Row 1 -->
+                    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px;">
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Variantes priorizadas</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            </div>
+                            <div class="stat-value" id="db-total-variants">—</div>
+                            <div style="display:flex;gap:12px;margin-top:6px;">
+                                <span style="font-size:0.72rem;color:#f87171;"><span id="db-pathogenicas">—</span> Patogénicas</span>
+                                <span style="font-size:0.72rem;color:#fbbf24;"><span id="db-hotspots">—</span> Hotspots</span>
+                            </div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Hotspot #1</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            </div>
+                            <div class="stat-value" style="font-size:1.3rem;" id="db-top-gene">—</div>
+                            <div class="stat-change pos" id="db-top-freq">—</div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Estructuras 3D</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                            </div>
+                            <div class="stat-value" id="db-structures">—</div>
+                            <div class="stat-change">Boltz-1 · AlphaFold · ESMFold</div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Mayor impacto estructural</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+                            </div>
+                            <div class="stat-value" style="font-size:1.3rem;color:var(--danger);" id="db-max-rmsd">—</div>
+                            <div class="stat-change" id="db-max-rmsd-variant">RMSD sitio activo</div>
+                        </div>
+                    </div>
+
+                    <!-- KPI Row 2 -->
+                    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px;">
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Variantes con docking</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+                            </div>
+                            <div class="stat-value" id="db-docked">—</div>
+                            <div class="stat-change">AutoDock Vina 1.2.3 · 11 fármacos</div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Mejor afinidad global</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" style="width:16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="stat-value" style="color:var(--success);" id="db-best-score">—</div>
+                            <div style="font-size:0.72rem;color:var(--text-tertiary);margin-top:4px;">
+                                <span id="db-best-drug" style="color:var(--text-secondary);font-weight:600;"></span>
+                                → <span id="db-best-variant"></span>
+                            </div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Candidatos repositionables</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            </div>
+                            <div class="stat-value" style="color:var(--success);" id="db-repos">—</div>
+                            <div class="stat-change">pares con Δ ≤ −0.5 kcal/mol</div>
+                        </div>
+                        <div class="card fade-up" style="cursor:pointer;transition:border-color 0.2s;" onclick="document.querySelector('[data-view=variants]').click()"
+                             onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor=''">
+                            <div class="stat-header">
+                                <span class="stat-label">Acceso rápido</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" style="width:16px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </div>
+                            <div style="font-size:0.9rem;color:var(--accent);font-weight:600;margin-top:10px;">Explorar variantes →</div>
+                            <div style="font-size:0.73rem;color:var(--text-tertiary);margin-top:4px;">Ver tabla TCGA completa</div>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline steps dinámicos -->
+                    <div class="card pipeline-card fade-up" style="margin-bottom:20px;">
+                        <div class="pipeline-steps">
+                            <div class="step done" id="step-m1">
+                                <div class="step-circle">M1</div>
+                                <div class="step-label">Ingesta<br>GDC API</div>
+                                <div class="step-pct" style="font-size:0.65rem;color:var(--success);margin-top:2px;">✓ Completo</div>
+                            </div>
+                            <div class="step done" id="step-m2">
+                                <div class="step-circle">M2</div>
+                                <div class="step-label">Priorización<br>Variantes</div>
+                                <div class="step-pct" style="font-size:0.65rem;color:var(--success);margin-top:2px;">✓ Completo</div>
+                            </div>
+                            <div class="step" id="step-m3">
+                                <div class="step-circle">M3</div>
+                                <div class="step-label">Predicción<br>Estructural</div>
+                                <div class="step-pct" style="font-size:0.65rem;margin-top:2px;color:var(--accent);">—</div>
+                            </div>
+                            <div class="step" id="step-m4">
+                                <div class="step-circle">M4</div>
+                                <div class="step-label">Docking<br>Vina</div>
+                                <div class="step-pct" style="font-size:0.65rem;margin-top:2px;color:var(--accent);">—</div>
+                            </div>
+                            <div class="step" id="step-m5">
+                                <div class="step-circle">M5</div>
+                                <div class="step-label">Reporte<br>Final</div>
+                                <div class="step-pct" style="font-size:0.65rem;margin-top:2px;color:var(--accent);">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top-5 variantes integradas -->
+                    <div class="card fade-up">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                            <div class="section-title" style="margin:0;">Top 5 variantes — resumen integrado</div>
+                            <button class="fasta-btn" style="padding:6px 14px;font-size:0.75rem;"
+                                onclick="document.querySelector('[data-view=variants]').click()">Ver todas →</button>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+                                <thead>
+                                    <tr style="border-bottom:1px solid var(--border);color:var(--text-tertiary);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.04em;">
+                                        <th style="padding:8px 6px;text-align:left;">#</th>
+                                        <th style="padding:8px 6px;text-align:left;">Gen</th>
+                                        <th style="padding:8px 6px;text-align:left;">Variante</th>
+                                        <th style="padding:8px 6px;text-align:left;">Casos</th>
+                                        <th style="padding:8px 6px;text-align:left;">Clasificación</th>
+                                        <th style="padding:8px 6px;text-align:left;">Mejor Vina</th>
+                                        <th style="padding:8px 6px;text-align:left;">Fármaco</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="db-top-table">
+                                    <tr><td colspan="7" style="padding:20px;text-align:center;color:var(--text-tertiary);">Cargando datos...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════════ -->
+                <!-- VARIANTS VIEW                                      -->
+                <!-- ══════════════════════════════════════════════════ -->
+                <section id="view-variants" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title">Exploración TCGA</h2>
+                        <div class="grid-two-col" id="variants-controls" style="margin-bottom:20px;align-items:flex-end;background:rgba(255,255,255,0.03);padding:16px;border-radius:var(--radius-md);border:1px solid var(--border);">
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <label style="font-size:0.65rem;color:var(--text-tertiary);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Buscar Gen</label>
+                                <input type="text" id="search-gene" placeholder="Ej: PIK3CA, TP53..." style="background:var(--bg-tertiary);border:1px solid var(--border);color:#fff;padding:8px 12px;border-radius:6px;font-size:0.85rem;width:100%;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <label style="font-size:0.65rem;color:var(--text-tertiary);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Variante Proteica</label>
+                                <input type="text" id="search-variant" placeholder="Ej: H1047, R248..." style="background:var(--bg-tertiary);border:1px solid var(--border);color:#fff;padding:8px 12px;border-radius:6px;font-size:0.85rem;width:100%;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <label style="font-size:0.65rem;color:var(--text-tertiary);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Clasificación</label>
+                                <select id="filter-class" style="background:var(--bg-tertiary);border:1px solid var(--border);color:#fff;padding:8px 12px;border-radius:6px;font-size:0.85rem;cursor:pointer;outline:none;width:100%;">
+                                    <option value="ALL">Todas</option>
+                                    <option value="Pathogenic">Patogénicas</option>
+                                    <option value="VUS">VUS</option>
+                                </select>
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:flex-end;">
+                                <span id="variant-count-badge" style="font-size:0.75rem;padding:6px 12px;background:rgba(13,115,119,0.1);color:var(--accent);border-radius:20px;border:1px solid var(--accent);font-weight:700;">MOSTRANDO: 10</span>
+                            </div>
+                        </div>
+                        <p class="view-subtitle">Épica 1: Ingesta de 1,084 pacientes y filtrado de relevancia clínica.</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th><th>Gen</th><th>Variante proteica</th><th>Frecuencia</th>
+                                    <th>% Cohorte</th><th>Posición Genómica</th><th>Clasificación</th><th>Input AlphaFold</th>
+                                </tr>
+                            </thead>
+                            <tbody id="variants-body"></tbody>
+                        </table>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:20px;">
+                        <button id="btn-analyze-structure" class="fasta-btn active" style="padding:12px 24px;">Analizar estructuras →</button>
+                        <button class="fasta-btn" onclick="document.getElementById('vus-modal-overlay').classList.add('open')">¿Qué es VUS? ↗</button>
+                    </div>
+                </section>
+
+                <!-- RAW DATA VIEW -->
+                <section id="view-raw-data" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title">Dataset Base: TCGA-BRCA</h2>
+                        <p class="view-subtitle">Consulta de todas las mutaciones somáticas descargadas vía GDC API.</p>
+                    </div>
+
+                    <!-- Filtros Dataset Base -->
+                    <div class="grid-three-col" style="margin-bottom:20px; background:rgba(255,255,255,0.03); padding:16px; border-radius:var(--radius-md); border:1px solid var(--border); align-items:flex-end;">
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <label style="font-size:0.65rem; color:var(--text-tertiary); font-weight:700; text-transform:uppercase;">Buscar Gen</label>
+                            <input type="text" id="raw-search-gene" placeholder="Ej: TP53..." style="background:var(--bg-tertiary); border:1px solid var(--border); color:#fff; padding:8px 12px; border-radius:6px; font-size:0.85rem; outline:none;">
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <label style="font-size:0.65rem; color:var(--text-tertiary); font-weight:700; text-transform:uppercase;">ID Muestra</label>
+                            <input type="text" id="raw-search-sample" placeholder="TCGA-A1-..." style="background:var(--bg-tertiary); border:1px solid var(--border); color:#fff; padding:8px 12px; border-radius:6px; font-size:0.85rem; outline:none;">
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <label style="font-size:0.65rem; color:var(--text-tertiary); font-weight:700; text-transform:uppercase;">Tipo de Variante</label>
+                            <select id="raw-filter-type" style="background:var(--bg-tertiary); border:1px solid var(--border); color:#fff; padding:8px 12px; border-radius:6px; font-size:0.85rem; cursor:pointer; outline:none;">
+                                <option value="ALL">Todos los tipos</option>
+                                <option value="Missense_Mutation">Missense</option>
+                                <option value="Nonsense_Mutation">Nonsense</option>
+                                <option value="Frame_Shift_Del">FS Deletion</option>
+                                <option value="Frame_Shift_Ins">FS Insertion</option>
+                                <option value="Splice_Site">Splice Site</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="data-table-container">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead><tr><th>Gen</th><th>Clasificación</th><th>Cambio Proteico</th><th>ID Muestra</th><th>Chr</th><th>Posición</th></tr></thead>
+                                <tbody id="raw-data-body"></tbody>
+                            </table>
+                        </div>
+                        <div id="raw-data-footer" style="padding:20px;text-align:center;">
+                            <button id="btn-load-more" class="fasta-btn" style="padding:10px 30px;">Cargar más registros...</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ANALYSIS VIEW -->
+                <section id="view-analysis" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title">Análisis Avanzado</h2>
+                        <p class="view-subtitle">Distribución de mutaciones por gen y tipo.</p>
+                    </div>
+                    <div class="grid-two-col">
+                        <div class="card" style="min-height:400px;">
+                            <h3 class="stat-label">Frecuencia por Gen Top-20</h3>
+                            <div id="plot-genes" style="width:100%;height:350px;"></div>
+                        </div>
+                        <div class="card" style="min-height:400px;">
+                            <h3 class="stat-label">Distribución de Tipos</h3>
+                            <div id="plot-types" style="width:100%;height:350px;"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- STRUCTURAL VIEW -->
+                <section id="view-structure" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title" id="struct-view-title">Análisis Estructural 3D</h2>
+                        <p class="view-subtitle">Inspección de modelos moleculares predichos (AlphaFold / Boltz-1).</p>
+                    </div>
+                    <div class="grid-two-col" style="margin-bottom:20px;">
+                        <div class="card" style="padding:20px;">
+                            <div class="section-title">Proteína wild-type (WT)</div>
+                            <div id="wt-viewer-panel" style="background:rgba(0,0,0,0.2);border-radius:8px;height:250px;margin-bottom:15px;position:relative;overflow:hidden;">
+                                <div id="wt-molstar-container" style="width:100%;height:100%;"></div>
+                                <div class="viewer-toolbar">
+                                    <div class="toolbar-group">
+                                        <button class="t-btn active" onclick="setRepresentation('wt','cartoon')">Cartoon</button>
+                                        <button class="t-btn" onclick="setRepresentation('wt','surface')">Surf</button>
+                                        <button class="t-btn" onclick="setRepresentation('wt','ballstick')">Ball</button>
+                                    </div>
+                                    <button class="t-btn" onclick="exportViewerImage('wt')" title="Exportar PNG">📸</button>
+                                </div>
+                                <div class="viewer-controls">
+                                    <button onclick="zoomViewer('wt',1.2)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                                    <button onclick="zoomViewer('wt',0.8)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                                    <div class="btn-sep"></div>
+                                    <button onclick="resetViewer('wt')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></button>
+                                    <button onclick="toggleExpand('wt')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg></button>
+                                </div>
+                                <div class="plddt-badge" id="wt-plddt-label" style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.6);padding:4px 8px;border-radius:4px;font-size:0.75rem;">pLDDT: --</div>
+                                <div class="sync-status" id="wt-sync-status">🔗 SinC</div>
+                            </div>
+                            <div class="af-card">
+                                <div class="af-card-row"><span>pLDDT promedio</span><span id="wt-avg-plddt">--</span></div>
+                                <div class="af-card-row"><span>Confianza</span><span id="wt-confidence" style="color:var(--success);">--</span></div>
+                                <div class="plddt-bar-container" style="height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-top:10px;overflow:hidden;">
+                                    <div id="wt-plddt-bar" style="height:100%;width:0%;background:var(--success);transition:width 0.5s;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="padding:20px;">
+                            <div class="section-title" id="mut-panel-title">Proteína mutada</div>
+                            <div id="mut-viewer-panel" style="background:rgba(0,0,0,0.2);border-radius:8px;height:250px;margin-bottom:15px;position:relative;overflow:hidden;">
+                                <div id="mut-molstar-container" style="width:100%;height:100%;"></div>
+                                <div class="viewer-toolbar">
+                                    <div class="toolbar-group">
+                                        <button class="t-btn active" onclick="setRepresentation('mut','cartoon')">Cartoon</button>
+                                        <button class="t-btn" onclick="setRepresentation('mut','surface')">Surf</button>
+                                        <button class="t-btn" onclick="setRepresentation('mut','ballstick')">Ball</button>
+                                    </div>
+                                    <button class="t-btn" onclick="exportViewerImage('mut')" title="Exportar PNG">📸</button>
+                                </div>
+                                <div class="viewer-controls">
+                                    <button onclick="zoomViewer('mut',1.2)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                                    <button onclick="zoomViewer('mut',0.8)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                                    <div class="btn-sep"></div>
+                                    <button onclick="resetViewer('mut')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></button>
+                                    <button onclick="toggleExpand('mut')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg></button>
+                                </div>
+                                <div class="plddt-badge" id="mut-plddt-label" style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.6);padding:4px 8px;border-radius:4px;font-size:0.75rem;">pLDDT: --</div>
+                                <div class="sync-status" id="mut-sync-status">🔗 SinC</div>
+                            </div>
+                            <div class="af-card">
+                                <div class="af-card-row"><span>RMSD global</span><span id="rmsd-global">--</span></div>
+                                <div class="af-card-row"><span>RMSD sitio activo</span><span id="rmsd-active" style="color:var(--accent);">--</span></div>
+                                <div class="plddt-bar-container" style="height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-top:10px;overflow:hidden;">
+                                    <div id="mut-plddt-bar" style="height:100%;width:0%;background:var(--accent);transition:width 0.5s;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="padding:20px;">
+                        <h3 class="section-title">RMSD por región</h3>
+                        <div id="rmsd-chart-container" style="display:flex;flex-direction:column;gap:12px;margin-top:15px;"></div>
+                    </div>
+                    <div class="controls-area" style="margin-top:20px;display:flex;gap:12px;align-items:center;">
+                        <select id="struct-variant-select" class="fasta-btn" style="width:250px;text-align:left;"><option value="">-- Cambiar Variante --</option></select>
+                        <button class="fasta-btn" id="btn-scientific-mode" style="border:1px solid var(--accent);color:var(--accent);">🔬 Modo Científico: OFF</button>
+                        <button class="fasta-btn" id="btn-superposition" onclick="toggleSuperposition()" style="border:1px solid var(--info);color:var(--info);">🔄 Superponer WT/Mut</button>
+                        <button class="fasta-btn active" id="btn-next-docking">Continuar con docking →</button>
+                    </div>
+                </section>
+
+                <!-- DOCKING VIEW -->
+                <section id="view-docking" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title">Docking molecular — <span id="docking-variant-label">Cargando...</span></h2>
+                        <p class="view-subtitle">AutoDock Vina 1.2.3 · ChEMBL + DrugBank Open</p>
+                    </div>
+                    <div class="grid-metrics" style="margin-bottom:25px;">
+                        <div class="metric-card"><div class="metric-label">Ligandos evaluados</div><div class="metric-value">11</div><div class="metric-sub">ChEMBL + DrugBank</div></div>
+                        <div class="metric-card"><div class="metric-label">Mejor score Vina</div><div class="metric-value" id="top-vina-score" style="color:var(--success);">--</div><div class="metric-sub">kcal/mol</div></div>
+                        <div class="metric-card"><div class="metric-label">Fármacos FDA</div><div class="metric-value">7</div><div class="metric-sub">aprobados en lista</div></div>
+                        <div class="metric-card"><div class="metric-label">Repositionables</div><div class="metric-value" id="repro-count" style="color:var(--success);">--</div><div class="metric-sub">Δscore ≤ −0.5</div></div>
+                    </div>
+                    <div class="grid-docking">
+                        <div class="card" style="padding:20px;">
+                            <div class="section-title">Ranking Top-10 inhibidores</div>
+                            <div id="docking-ranking-list" style="display:flex;flex-direction:column;gap:4px;"></div>
+                        </div>
+                        <div class="card" style="padding:20px;">
+                            <div class="section-title">Fármacos repositionables</div>
+                            <div id="reposition-list"></div>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-top:20px;padding:20px;">
+                        <h3 class="section-title">Visualización de Pose de Unión</h3>
+                        <div id="docking-viewer-container" style="background:rgba(0,0,0,0.2);border-radius:8px;height:400px;margin-top:15px;position:relative;overflow:hidden;">
+                            <div id="docking-molstar-container" style="width:100%;height:100%;"></div>
+                            <div class="viewer-controls">
+                                <button onclick="zoomViewer('docking',1.2)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                                <button onclick="zoomViewer('docking',0.8)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                                <div class="btn-sep"></div>
+                                <button onclick="resetViewer('docking')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></button>
+                                <button onclick="toggleExpand('docking')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg></button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- REPORT VIEW -->
+                <section id="view-report" class="view">
+                    <div class="view-header">
+                        <h2 class="view-title">Reporte de análisis — <span id="report-variant-label">Cargando...</span></h2>
+                        <p class="view-subtitle">Generado automáticamente · M5 Report Generator</p>
+                    </div>
+                    <div class="report-section" style="border:1px solid var(--border);border-radius:var(--radius-md);padding:24px;margin-bottom:20px;background:rgba(255,255,255,0.02);">
+                        <div class="section-title">Perfil de la variante</div>
+                        <div class="grid-two-col">
+                            <div class="info-item"><span class="stat-label">Gen</span><span class="info-item-value" id="report-gene" style="font-weight:600;">--</span></div>
+                            <div class="info-item"><span class="stat-label">Variante proteica</span><span class="info-item-value" id="report-change" style="font-family:monospace;">--</span></div>
+                            <div class="info-item"><span class="stat-label">Frecuencia en cohorte</span><span class="info-item-value" id="report-freq">--</span></div>
+                            <div class="info-item"><span class="stat-label">Clasificación clínica</span><span id="report-class" style="font-weight:600;">--</span></div>
+                        </div>
+                    </div>
+                    <div class="report-section" style="border:1px solid var(--border);border-radius:var(--radius-md);padding:24px;margin-bottom:20px;background:rgba(255,255,255,0.02);">
+                        <div class="section-title">Análisis estructural</div>
+                        <div class="grid-two-col">
+                            <div class="info-item"><span class="stat-label">pLDDT WT</span><span class="info-item-value" id="report-wt-plddt">--</span></div>
+                            <div class="info-item"><span class="stat-label">pLDDT Mutada</span><span class="info-item-value" id="report-mut-plddt">--</span></div>
+                            <div class="info-item"><span class="stat-label">RMSD Sitio Activo</span><span class="info-item-value" id="report-rmsd" style="color:var(--danger);">--</span></div>
+                            <div class="info-item"><span class="stat-label">Confianza Estructural</span><span class="info-item-value" style="color:var(--success);">ALTA</span></div>
+                        </div>
+                    </div>
+                    <div class="report-content" style="margin-top:20px;">
+                        <div style="display:flex;flex-direction:column;gap:20px;">
+                            <div class="card" style="padding:20px;">
+                                <div class="section-title">Perfil Genómico y Estructural</div>
+                                <div class="grid-two-col" style="margin-bottom:16px;">
+                                    <div class="metric-box"><div class="metric-label">Frecuencia Cohorte</div><div class="metric-value highlight" id="report-freq-2">--</div></div>
+                                    <div class="metric-box"><div class="metric-label">Clasificación</div><div class="metric-value" id="report-class-2">--</div></div>
+                                </div>
+                                <div class="grid-two-col">
+                                    <div class="metric-box" style="background:rgba(46,204,113,0.05);border:1px solid rgba(46,204,113,0.2);">
+                                        <div class="metric-label" style="color:var(--success);">pLDDT WT</div>
+                                        <div class="metric-value" id="report-wt-plddt-2" style="font-family:monospace;">--</div>
+                                    </div>
+                                    <div class="metric-box" style="background:rgba(231,76,60,0.05);border:1px solid rgba(231,76,60,0.2);">
+                                        <div class="metric-label" style="color:var(--danger);">pLDDT Mutante</div>
+                                        <div class="metric-value" id="report-mut-plddt-2" style="font-family:monospace;">--</div>
+                                    </div>
+                                    <div class="metric-box" style="grid-column:span 2;">
+                                        <div class="metric-label">Impacto Estructural (RMSD)</div>
+                                        <div class="metric-value highlight" id="report-rmsd-2" style="font-size:1.5rem;color:#ff9e0a;">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card" style="padding:20px;">
+                                <div class="section-title">Estabilidad WT vs Mutante</div>
+                                <div id="plotly-wt-mut-comp" style="width:100%;height:250px;"></div>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:20px;">
+                            <div class="card" style="padding:20px;">
+                                <div class="section-title">Síntesis Diagnóstica Molecular</div>
+                                <div class="report-findings" id="report-findings" style="line-height:1.6;color:var(--text-secondary);font-size:0.95rem;">Generando síntesis...</div>
+                            </div>
+                            <div class="card" style="padding:20px;">
+                                <div class="section-title">Distribución de Docking (kcal/mol)</div>
+                                <div id="plotly-score-dist" style="width:100%;height:200px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="padding:20px;margin-top:20px;">
+                        <div class="section-title">Ranking Ordenable de Fármacos</div>
+                        <div style="overflow-x:auto;">
+                            <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:0.9rem;" id="interactive-drug-table">
+                                <thead>
+                                    <tr style="border-bottom:2px solid rgba(255,255,255,0.1);text-align:left;cursor:pointer;">
+                                        <th style="padding:10px;" onclick="sortTable(0)">Rank ↕</th>
+                                        <th style="padding:10px;" onclick="sortTable(1)">Fármaco ↕</th>
+                                        <th style="padding:10px;" onclick="sortTable(2)">Target ↕</th>
+                                        <th style="padding:10px;" onclick="sortTable(3)">Afinidad Vina ↕</th>
+                                        <th style="padding:10px;" onclick="sortTable(4)">DiffDock ↕</th>
+                                        <th style="padding:10px;" onclick="sortTable(5)">Estado ↕</th>
+                                        <th style="padding:10px;" onclick="sortTable(6)">Δ Repos. ↕</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-drug-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:20px;">
+                        <button class="fasta-btn active" onclick="window.print()">Exportar PDF</button>
+                    </div>
+                </section>
+
+                <!-- ABOUT / SOBRE EL PROYECTO VIEW -->
+                <section id="view-about" class="view">
+                    <div class="view-header fade-up">
+                        <h2 class="view-title">Sobre el Proyecto GEMA MX</h2>
+                        <p class="view-subtitle">Oncología de Precisión y Ciencia de Datos en México</p>
+                    </div>
+
+                    <div class="card fade-up" style="margin-bottom:24px; overflow:hidden; padding:0; border-color:var(--accent); display:flex; flex-direction:column; align-items:center; background:rgba(0,0,0,0.2);">
+                        <img src="banner.png" alt="Hero Banner" style="width:50%; height:auto; display:block;">
+                        <div style="padding:24px;">
+                            <div class="section-title" style="color:var(--accent); font-size:1.1rem;">Nuestra Misión y la Problemática en México</div>
+                            <p style="line-height:1.7; color:var(--text-secondary); margin-top:12px;">
+                                En México, el <strong>cáncer de mama</strong> se ha consolidado como la principal causa de muerte por tumores malignos en mujeres. 
+                                Un obstáculo crítico en la clínica es la detección de variantes genéticas de "Significado Incierto" (VUS), 
+                                mutaciones raras cuya relación con la enfermedad aún no está documentada, lo que impide diagnósticos certeros y tratamientos personalizados.
+                            </p>
+                            <p style="line-height:1.7; color:var(--text-secondary); margin-top:12px;">
+                                <strong>GEMA MX</strong> responde a este desafío integrando Inteligencia Artificial avanzada. 
+                                Mediante el uso de <strong>AlphaFold</strong> para el modelado de proteínas y simulaciones de 
+                                <strong>docking molecular</strong>, este pipeline permite visualizar cómo un fármaco se acopla a un gen mutado, 
+                                proporcionando evidencia estructural para reclasificar variantes y, en última instancia, 
+                                identificar terapias dirigidas que pueden salvar la vida de miles de mujeres mexicanas.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid-two-col">
+                        <div class="card fade-up" style="padding:24px;">
+                            <div class="section-title">Líder del Proyecto</div>
+                            <div style="display:flex; align-items:center; gap:16px; margin-top:16px;">
+                                <div style="width:58px; height:58px; background:linear-gradient(135deg,var(--accent),#14b8a6); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:1.1rem; box-shadow:0 4px 15px var(--accent-glow);">XG</div>
+                                <div>
+                                    <div style="font-size:1.05rem; font-weight:600; color:var(--text-primary); margin-bottom:3px;">Ing. Ximena Gutiérrez Gálvez</div>
+                                    <div style="font-size:0.8rem; color:var(--accent); font-weight:500;">Líder del proyecto</div>
+                                    <a href="mailto:ximena.gtzg@gmail.com" style="color:var(--text-tertiary); font-size:0.85rem; text-decoration:none;">ximena.gtzg@gmail.com</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card fade-up" style="padding:24px;">
+                            <div class="section-title">Asesores Académicos</div>
+                            <div style="display:flex; flex-direction:column; gap:20px; margin-top:16px;">
+                                <div style="display:flex; align-items:center; gap:16px;">
+                                    <div style="width:45px; height:45px; background:linear-gradient(135deg,#3b82f6,#6366f1); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:700;">JW</div>
+                                    <div>
+                                        <div style="font-weight:600; color:var(--text-primary);">Dr. Julio Waissman Vilanova</div>
+                                        <a href="mailto:julio.waissman@unison.mx" style="color:var(--text-tertiary); font-size:0.85rem; text-decoration:none;">julio.waissman@unison.mx</a>
+                                    </div>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:16px;">
+                                    <div style="width:45px; height:45px; background:linear-gradient(135deg,#0ea5e9,#0284c7); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:700;">PZ</div>
+                                    <div>
+                                        <div style="font-weight:600; color:var(--text-primary);">Dr. Paul Zavala Rivera</div>
+                                        <a href="mailto:paul.zavala@unison.mx" style="color:var(--text-tertiary); font-size:0.85rem; text-decoration:none;">paul.zavala@unison.mx</a>
+                                    </div>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:16px;">
+                                    <div style="width:45px; height:45px; background:linear-gradient(135deg,#8b5cf6,#a78bfa); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:700;">HG</div>
+                                    <div>
+                                        <div style="font-weight:600; color:var(--text-primary);">Mtro. Héctor Gutiérrez Ibarra</div>
+                                        <a href="mailto:alberto.gtz@gmail.com" style="color:var(--text-tertiary); font-size:0.85rem; text-decoration:none;">alberto.gtz@gmail.com</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vus-footer-note" style="margin-top:24px; text-align:center;">
+                        Desarrollado en la <strong>Universidad de Sonora (UNISON)</strong> · <strong>Google.org Impact Challenge: AI for Science</strong>
+                    </div>
+                </section>
+                
+                <!-- GDC DOCS VIEW -->
+                <section id="view-gdc-docs" class="view">
+                    <div class="view-header fade-up">
+                        <h2 class="view-title">API del GDC &mdash; Genomic Data Commons</h2>
+                        <p class="view-subtitle">Referencia técnica de la API utilizada para descargar los datos de mutaciones somáticas del proyecto TCGA-BRCA &middot; NCI / NIH</p>
+                    </div>
+
+                    <!-- Qué es el GDC -->
+                    <div class="card fade-up" style="padding:28px;margin-bottom:20px;">
+                        <div class="section-title">¿Qué es el GDC?</div>
+                        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.75;margin-bottom:16px;">
+                            El <strong style="color:var(--text-primary)">Genomic Data Commons (GDC)</strong> es la plataforma del Instituto Nacional del Cáncer (NCI / NIH)
+                            que centraliza y estandariza datos genómicos de cáncer a nivel mundial. Es el repositorio oficial del proyecto
+                            <strong style="color:var(--text-primary)">TCGA (The Cancer Genome Atlas)</strong>, del cual se obtuvieron los
+                            <strong style="color:var(--accent)">1,084 casos de cáncer de mama (TCGA-BRCA)</strong> que forman el dataset base de GEMA MX.
+                        </p>
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                            <a href="https://portal.gdc.cancer.gov" target="_blank" class="fasta-btn active" style="padding:10px 18px;font-size:0.83rem;">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                Portal GDC
+                            </a>
+                            <a href="https://docs.gdc.cancer.gov/API/Users_Guide/Getting_Started/" target="_blank" class="fasta-btn" style="padding:10px 18px;font-size:0.83rem;">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                Documentación oficial API
+                            </a>
+                            <a href="https://docs.gdc.cancer.gov/API/Users_Guide/Search_and_Retrieval/" target="_blank" class="fasta-btn" style="padding:10px 18px;font-size:0.83rem;">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                Search &amp; Retrieval
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Endpoints usados -->
+                    <div style="margin-bottom:20px;">
+                        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:14px;">Endpoints utilizados en GEMA MX</div>
+                        <div style="display:flex;flex-direction:column;gap:10px;">
+
+                            <div class="card" style="padding:18px 20px;">
+                                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                                    <span style="font-size:0.7rem;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(16,185,129,0.12);color:var(--success);">GET</span>
+                                    <code style="font-size:0.82rem;color:#60a5fa;">https://api.gdc.cancer.gov/ssm_occurrences</code>
+                                </div>
+                                <div style="font-size:0.83rem;color:var(--text-secondary);line-height:1.6;">Descarga de mutaciones somáticas (SSM) del proyecto TCGA-BRCA. Filtra por <code style="color:#a78bfa;">cases.project.project_id=TCGA-BRCA</code> y retorna campos como <code style="color:#a78bfa;">hugo_symbol</code>, <code style="color:#a78bfa;">protein_change</code>, <code style="color:#a78bfa;">sample_id</code> y coordenadas genómicas. Paginado con <code style="color:#a78bfa;">size</code> y <code style="color:#a78bfa;">from</code>.</div>
+                            </div>
+
+                            <div class="card" style="padding:18px 20px;">
+                                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                                    <span style="font-size:0.7rem;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(16,185,129,0.12);color:var(--success);">GET</span>
+                                    <code style="font-size:0.82rem;color:#60a5fa;">https://api.gdc.cancer.gov/cases</code>
+                                </div>
+                                <div style="font-size:0.83rem;color:var(--text-secondary);line-height:1.6;">Metadatos clínicos por paciente: edad al diagnóstico, estadio tumoral, subtipo molecular (Luminal A/B, HER2, TNBC). Permite cruzar variantes con fenotipo clínico para priorización de relevancia.</div>
+                            </div>
+
+                            <div class="card" style="padding:18px 20px;">
+                                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                                    <span style="font-size:0.7rem;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(59,130,246,0.12);color:var(--info);">POST</span>
+                                    <code style="font-size:0.82rem;color:#60a5fa;">https://api.gdc.cancer.gov/ssm_occurrences</code>
+                                </div>
+                                <div style="font-size:0.83rem;color:var(--text-secondary);line-height:1.6;">Consultas con filtros complejos en formato JSON (operadores <code style="color:#a78bfa;">=</code>, <code style="color:#a78bfa;">in</code>, <code style="color:#a78bfa;">and</code>). Se usa para filtrar variantes por tipo de mutación, gen específico o rango de frecuencia antes de descargar el dataset completo.</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Parámetros clave y campos -->
+                    <div class="grid-two-col" style="margin-bottom:20px;">
+                        <div>
+                            <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:14px;">Parámetros de consulta principales</div>
+                            <div class="card" style="padding:0;overflow:hidden;">
+                                <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+                                    <thead>
+                                        <tr style="background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border);">
+                                            <th style="padding:10px 14px;text-align:left;color:var(--text-tertiary);font-size:0.7rem;text-transform:uppercase;">Parámetro</th>
+                                            <th style="padding:10px 14px;text-align:left;color:var(--text-tertiary);font-size:0.7rem;text-transform:uppercase;">Descripción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 14px;"><code style="color:#a78bfa;">filters</code></td><td style="padding:10px 14px;color:var(--text-secondary);">Objeto JSON con condiciones de filtro</td></tr>
+                                        <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 14px;"><code style="color:#a78bfa;">fields</code></td><td style="padding:10px 14px;color:var(--text-secondary);">Campos a retornar (separados por coma)</td></tr>
+                                        <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 14px;"><code style="color:#a78bfa;">size</code></td><td style="padding:10px 14px;color:var(--text-secondary);">Registros por página (máx. 10,000)</td></tr>
+                                        <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 14px;"><code style="color:#a78bfa;">from</code></td><td style="padding:10px 14px;color:var(--text-secondary);">Offset para paginación</td></tr>
+                                        <tr><td style="padding:10px 14px;"><code style="color:#a78bfa;">format</code></td><td style="padding:10px 14px;color:var(--text-secondary);">Formato de respuesta: JSON, TSV, CSV</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:14px;">Campos descargados para GEMA MX</div>
+                            <div class="card" style="padding:16px 20px;">
+                                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">ssm.consequence.transcript.gene.symbol</code>
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">ssm.consequence.transcript.aa_change</code>
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">ssm.consequence.transcript.consequence_type</code>
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">ssm.chromosome</code>
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">ssm.start_position</code>
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">ssm.end_position</code>
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">ssm.reference_allele</code>
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">ssm.tumor_allele</code>
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">case.case_id</code>
+                                    <code style="font-size:0.73rem;padding:4px 9px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:4px;color:#60a5fa;">case.submitter_id</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ejemplo de query -->
+                    <div>
+                        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:14px;">Ejemplo de query utilizado en ingest_data.py</div>
+                        <div class="card" style="padding:0;overflow:hidden;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border);">
+                                <span style="font-size:0.72rem;color:var(--text-tertiary);font-weight:600;">Python &middot; ingest_data.py</span>
+                                <span style="font-size:0.7rem;color:var(--success);padding:2px 8px;background:rgba(16,185,129,0.1);border-radius:4px;">1,084 casos &middot; TCGA-BRCA</span>
+                            </div>
+                            <pre style="margin:0;padding:20px;font-size:0.8rem;line-height:1.7;color:#e2e8f0;overflow-x:auto;background:rgba(0,0,0,0.2);"><code>import requests, json
+
+ENDPOINT = "https://api.gdc.cancer.gov/ssm_occurrences"
+
+filtros = {
+    "op": "and",
+    "content": [
+        {"op": "=", "content": {
+            "field": "cases.project.project_id",
+            "value": "TCGA-BRCA"
+        }},
+        {"op": "=", "content": {
+            "field": "ssm.consequence.transcript.consequence_type",
+            "value": "missense_variant"
+        }}
+    ]
+}
+
+params = {
+    "filters": json.dumps(filtros),
+    "fields": "ssm.consequence.transcript.gene.symbol,"
+              "ssm.consequence.transcript.aa_change,"
+              "ssm.chromosome,ssm.start_position,"
+              "case.submitter_id",
+    "format": "JSON",
+    "size": 10000,
+    "from": 0
+}
+
+response = requests.get(ENDPOINT, params=params)
+data = response.json()["data"]["hits"]</code></pre>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- FIN VISTAS -->
+
+            </div><!-- /.content-area -->
+        </main>
+    </div><!-- /.app-container -->
+
+    <!-- ══ Modal: ¿Qué es VUS? ══════════════════════════════════════ -->
+    <div id="vus-modal-overlay" class="vus-modal-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+        <div class="vus-modal">
+            <button class="vus-modal-close" onclick="document.getElementById('vus-modal-overlay').classList.remove('open')">&times;</button>
+
+            <div class="vus-modal-badge">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Clasificación Clínica · ACMG/AMP
+            </div>
+
+            <h2>Variante de Significado Incierto</h2>
+            <p class="vus-subtitle">VUS &mdash; Variant of Uncertain Significance</p>
+
+            <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:0;">
+                Una <strong style="color:var(--text-primary)">VUS</strong> es una mutación genética para la cual la evidencia científica disponible es
+                insuficiente para clasificarla de forma definitiva como patogénica o benigna.
+                Esto no significa que sea inofensiva; simplemente que a&uacute;n no existe consenso en la literatura.
+            </p>
+
+            <div class="vus-divider"></div>
+
+            <div class="vus-section-title">Espectro de clasificación ACMG/AMP</div>
+            <div class="vus-tiers">
+                <div class="vus-tier">
+                    <div class="vus-tier-dot" style="background:#ef4444;"></div>
+                    <div>
+                        <div class="vus-tier-label" style="color:#f87171;">Patog&eacute;nica</div>
+                        <div class="vus-tier-desc">Evidencia s&oacute;lida de que la variante causa enfermedad. Se usa en decisiones cl&iacute;nicas y orientaci&oacute;n genética. Ej: <code style="font-size:0.75rem;color:#60a5fa;">PIK3CA H1047R</code></div>
+                    </div>
+                </div>
+                <div class="vus-tier">
+                    <div class="vus-tier-dot" style="background:#f97316;"></div>
+                    <div>
+                        <div class="vus-tier-label" style="color:#fb923c;">Probablemente patog&eacute;nica</div>
+                        <div class="vus-tier-desc">Alta sospecha clínica pero la evidencia a&uacute;n no es concluyente. Suele manejarse igual que patogénica en contexto clínico.</div>
+                    </div>
+                </div>
+                <div class="vus-tier" style="border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.04);">
+                    <div class="vus-tier-dot" style="background:#fbbf24;"></div>
+                    <div>
+                        <div class="vus-tier-label" style="color:#fbbf24;">VUS &mdash; Significado incierto</div>
+                        <div class="vus-tier-desc">La evidencia es contradictoria, insuficiente o simplemente no ha sido estudiada. Es la clasificaci&oacute;n m&aacute;s com&uacute;n en proyectos TCGA de variantes raras o poco frecuentes. Requiere reclasificaci&oacute;n peri&oacute;dica.</div>
+                    </div>
+                </div>
+                <div class="vus-tier">
+                    <div class="vus-tier-dot" style="background:#22d3ee;"></div>
+                    <div>
+                        <div class="vus-tier-label" style="color:#67e8f9;">Probablemente benigna</div>
+                        <div class="vus-tier-desc">Indicios de que la variante no causa enfermedad, pero sin confirmaci&oacute;n total. No suele reportarse en consejería genética.</div>
+                    </div>
+                </div>
+                <div class="vus-tier">
+                    <div class="vus-tier-dot" style="background:#10b981;"></div>
+                    <div>
+                        <div class="vus-tier-label" style="color:#6ee7b7;">Benigna</div>
+                        <div class="vus-tier-desc">Sin impacto funcional conocido. Presente en la poblaci&oacute;n general a alta frecuencia. No relevante para el fenotipo tumoral.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vus-divider"></div>
+
+            <div class="vus-section-title">¿Por qu&eacute; importa en este pipeline?</div>
+            <div class="vus-info-grid">
+                <div class="vus-info-card">
+                    <div class="label">Frecuencia en TCGA-BRCA</div>
+                    <div class="value">~60–70% de las variantes priorizadas son inicialmente VUS antes de an&aacute;lisis estructural</div>
+                </div>
+                <div class="vus-info-card">
+                    <div class="label">Reclasificaci&oacute;n funcional</div>
+                    <div class="value">El an&aacute;lisis de RMSD y docking puede elevar una VUS a candidata terap&eacute;utica si altera el sitio activo</div>
+                </div>
+                <div class="vus-info-card">
+                    <div class="label">Herramientas in silico</div>
+                    <div class="value">SIFT, PolyPhen-2, CADD y este pipeline (AlphaFold + Vina) contribuyen a reclasificar VUS con evidencia computacional</div>
+                </div>
+                <div class="vus-info-card">
+                    <div class="label">Consenso requerido</div>
+                    <div class="value">ClinVar, LOVD y bases de oncolog&iacute;a de precisi&oacute;n (OncoKB, CGI) integran evidencia multimodal para reclasificar</div>
+                </div>
+            </div>
+
+            <div class="vus-footer-note">
+                <strong>Nota cl&iacute;nica:</strong> Una VUS <em>no debe</em> usarse como base para decisiones terap&eacute;uticas directas sin evidencia funcional adicional.
+                En este proyecto, las VUS se priorizan seg&uacute;n frecuencia en cohorte, impacto estructural predicho (RMSD) y afinidad de docking,
+                con el objetivo de generar hip&oacute;tesis para validaci&oacute;n experimental futura.
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .vus-modal-overlay {
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: blur(6px);
+        z-index: 3000;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
+    .vus-modal-overlay.open { opacity: 1; pointer-events: all; }
+    .vus-modal {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        width: min(680px, 94vw); max-height: 88vh;
+        overflow-y: auto; padding: 36px; position: relative;
+        transform: translateY(18px) scale(0.97);
+        transition: transform 0.28s cubic-bezier(.22,.68,0,1.2);
+        box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(13,115,119,0.15);
+        scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    }
+    .vus-modal-overlay.open .vus-modal { transform: translateY(0) scale(1); }
+    .vus-modal-close {
+        position: absolute; top: 20px; right: 20px;
+        width: 32px; height: 32px; border-radius: 50%;
+        background: rgba(255,255,255,0.07); border: 1px solid var(--border);
+        color: var(--text-secondary); font-size: 1.2rem; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.2s;
+    }
+    .vus-modal-close:hover { background: rgba(239,68,68,0.15); color: var(--danger); border-color: var(--danger); }
+    .vus-modal-badge {
+        display: inline-flex; align-items: center; gap: 7px;
+        background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3);
+        color: #fbbf24; font-size: 0.72rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.07em;
+        padding: 5px 12px; border-radius: 100px; margin-bottom: 18px;
+    }
+    .vus-modal h2 {
+        font-family: var(--font-heading); font-size: 1.65rem;
+        font-weight: 700; color: var(--text-primary);
+        margin-bottom: 6px; line-height: 1.2;
+    }
+    .vus-modal .vus-subtitle { color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 28px; }
+    .vus-divider { height: 1px; background: var(--border); margin: 24px 0; }
+    .vus-section-title {
+        font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.08em; color: var(--accent); margin-bottom: 14px;
+    }
+    .vus-tiers { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+    .vus-tier {
+        display: flex; align-items: flex-start; gap: 14px;
+        padding: 14px 16px; border-radius: var(--radius-sm);
+        border: 1px solid var(--border); background: rgba(255,255,255,0.02);
+        transition: border-color 0.2s;
+    }
+    .vus-tier:hover { border-color: rgba(255,255,255,0.14); }
+    .vus-tier-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+    .vus-tier-label { font-size: 0.8rem; font-weight: 600; margin-bottom: 3px; }
+    .vus-tier-desc { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; }
+    .vus-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .vus-info-card {
+        background: rgba(13,115,119,0.06); border: 1px solid rgba(13,115,119,0.18);
+        border-radius: var(--radius-sm); padding: 14px 16px;
+    }
+    .vus-info-card .label {
+        font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em;
+        color: var(--text-tertiary); font-weight: 700; margin-bottom: 5px;
+    }
+    .vus-info-card .value { font-size: 0.88rem; color: var(--text-primary); line-height: 1.5; }
+    .vus-footer-note {
+        margin-top: 24px; padding: 14px 16px;
+        background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.2);
+        border-radius: var(--radius-sm); font-size: 0.8rem;
+        color: var(--text-secondary); line-height: 1.6;
+    }
+    .vus-footer-note strong { color: #93c5fd; }
+    @media (max-width: 540px) {
+        .vus-info-grid { grid-template-columns: 1fr; }
+        .vus-modal { padding: 24px 20px; }
+    }
+    </style>
+
+    <!-- ══ Estilos móvil mejorados ══ -->
+    <style>
+    /* Overlay oscuro al abrir el sidebar */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+        backdrop-filter: blur(3px);
+        z-index: 1999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .sidebar-overlay.active { display: block; opacity: 1; }
+
+    /* Botón X dentro del sidebar */
+    .sidebar-close-btn {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px 10px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid var(--border);
+    }
+    .sidebar-close-btn .scb-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-tertiary);
+    }
+    .sidebar-close-btn button {
+        width: 32px; height: 32px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.2s;
+        line-height: 1;
+    }
+    .sidebar-close-btn button:hover {
+        background: rgba(239,68,68,0.15);
+        color: var(--danger);
+        border-color: var(--danger);
+    }
+
+    /* Forzar visibilidad del botón hamburguesa en móvil */
+    @media (max-width: 1024px) {
+        .mobile-menu-btn {
+            display: flex !important;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        /* Sidebar deslizable */
+        .sidebar {
+            position: fixed !important;
+            left: -285px !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 280px !important;
+            height: 100dvh !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            transition: left 0.32s cubic-bezier(0.4,0,0.2,1),
+                        box-shadow 0.32s ease !important;
+            z-index: 2000 !important;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+            padding-bottom: 48px !important;
+        }
+        .sidebar.active {
+            left: 0 !important;
+            box-shadow: 8px 0 48px rgba(0,0,0,0.75) !important;
+        }
+        /* Mostrar botón X dentro del sidebar */
+        .sidebar-close-btn { display: flex; }
+        /* Botón hamburguesa con acento */
+        .mobile-menu-btn {
+            width: 44px !important;
+            height: 44px !important;
+            background: rgba(13,115,119,0.15) !important;
+            border-color: rgba(13,115,119,0.5) !important;
+            color: var(--accent) !important;
+        }
+        .mobile-menu-btn:hover {
+            background: var(--accent) !important;
+            color: #fff !important;
+        }
+    }
+    </style>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pdbe-molstar@3.2.0/build/pdbe-molstar-plugin.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="app.js"></script>
+    <script src="analysis.js"></script>
+    <script src="structural.js"></script>
+    <script src="docking.js"></script>
+    <script src="report.js"></script>
+    <script>
+        function openSidebar() {
+            document.querySelector('.sidebar').classList.add('active');
+            document.getElementById('sidebar-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSidebar() {
+            document.querySelector('.sidebar').classList.remove('active');
+            document.getElementById('sidebar-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        function toggleSidebar() {
+            const isOpen = document.querySelector('.sidebar').classList.contains('active');
+            isOpen ? closeSidebar() : openSidebar();
+        }
+        // Cerrar al seleccionar cualquier item del nav en móvil
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) closeSidebar();
+            });
+        });
+        // Cerrar con tecla Escape
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeSidebar();
+        });
+    </script>
+</body>
+</html>

@@ -278,10 +278,27 @@ async function highlightMutationSite(plugin, residueNumber) {
 window.toggleSuperposition = async () => {
     const sel = document.getElementById('struct-variant-select');
     const vid = sel?.value;
-    if (!vid) return;
+    const btn = document.getElementById('btn-superposition');
+    if (!vid) {
+        if (btn) {
+            btn.style.borderColor = 'var(--danger)';
+            btn.style.color = 'var(--danger)';
+            setTimeout(() => {
+                btn.style.borderColor = 'var(--info)';
+                btn.style.color = 'var(--info)';
+            }, 1500);
+        }
+        return;
+    }
     const hugo = vid.split('_')[0];
     if (isSuperpositionMode) {
         isSuperpositionMode = false;
+        if (btn) {
+            btn.style.background = '';
+            btn.style.color = 'var(--info)';
+            btn.style.borderColor = 'var(--info)';
+            btn.textContent = '🔄 Superponer WT/Mut';
+        }
         safeSetText('mut-panel-title', 'Proteína mutada');
         await loadBestStructure(window.mutViewer, vid, hugo, 'mut', vid);
         return;
@@ -289,11 +306,27 @@ window.toggleSuperposition = async () => {
     const wtUrl = window.structureManifest?.[`${hugo}_WT`];
     if (!wtUrl) return;
     isSuperpositionMode = true;
+    if (btn) {
+        btn.style.background = 'var(--info)';
+        btn.style.color = '#fff';
+        btn.textContent = '🔄 Superposición: ON';
+    }
     safeSetText('mut-panel-title', 'Superposición: WT');
     setViewerLoading('mut', true);
-    try { await window.mutViewer.visual.update({ customData: { url: wtUrl, format: wtUrl.endsWith('.cif') ? 'mmcif' : 'pdb' } }); }
-    catch(e) { isSuperpositionMode = false; }
-    finally { setViewerLoading('mut', false); }
+    try {
+        await window.mutViewer.visual.update({
+            customData: { url: wtUrl, format: wtUrl.endsWith('.cif') ? 'mmcif' : 'pdb' }
+        });
+    } catch(e) {
+        isSuperpositionMode = false;
+        if (btn) {
+            btn.style.background = '';
+            btn.style.color = 'var(--info)';
+            btn.textContent = '🔄 Superponer WT/Mut';
+        }
+    } finally {
+        setViewerLoading('mut', false);
+    }
 };
 
 // ── Linked views ──────────────────────────────────────────────────────────

@@ -1,0 +1,145 @@
+                <!-- Dashboard View -->
+                <section id="view-dashboard" class="view active">
+                    <div class="view-header fade-up">
+                        <h2 class="view-title">Estado del Pipeline</h2>
+                        <p class="view-subtitle">Resumen ejecutivo calculado en tiempo real desde los datos del proyecto.</p>
+                    </div>
+
+                    <!-- KPI Row 1: Variantes -->
+                    <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 16px;">
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Variantes priorizadas</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            </div>
+                            <div class="stat-value" id="db-total-variants">—</div>
+                            <div style="display:flex;gap:12px;margin-top:6px;">
+                                <span style="font-size:0.72rem;color:#f87171;"><span id="db-pathogenicas">—</span> Patogénicas</span>
+                                <span style="font-size:0.72rem;color:#fbbf24;"><span id="db-hotspots">—</span> Hotspots</span>
+                            </div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Hotspot #1</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            </div>
+                            <div class="stat-value" style="font-size:1.4rem;" id="db-top-gene">—</div>
+                            <div class="stat-change pos" id="db-top-freq">—</div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Estructuras 3D</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                            </div>
+                            <div class="stat-value" id="db-structures">—</div>
+                            <div class="stat-change">Boltz-1 + AlphaFold + ESMFold</div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Mayor impacto estructural</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+                            </div>
+                            <div class="stat-value" style="font-size:1.4rem;color:var(--danger);" id="db-max-rmsd">—</div>
+                            <div class="stat-change" id="db-max-rmsd-variant">RMSD sitio activo</div>
+                        </div>
+                    </div>
+
+                    <!-- KPI Row 2: Docking -->
+                    <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 20px;">
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Variantes con docking</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+                            </div>
+                            <div class="stat-value" id="db-docked">—</div>
+                            <div class="stat-change">AutoDock Vina 1.2.3 · 11 fármacos</div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Mejor afinidad global</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" style="width:16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="stat-value" style="color:var(--success);" id="db-best-score">—</div>
+                            <div style="font-size:0.72rem;color:var(--text-tertiary);margin-top:4px;">
+                                <span id="db-best-drug" style="color:var(--text-secondary);font-weight:600;"></span>
+                                → <span id="db-best-variant"></span>
+                            </div>
+                        </div>
+                        <div class="card fade-up">
+                            <div class="stat-header">
+                                <span class="stat-label">Candidatos repositionables</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" style="width:16px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            </div>
+                            <div class="stat-value" style="color:var(--success);" id="db-repos">—</div>
+                            <div class="stat-change">pares con Δ ≤ −0.5 kcal/mol</div>
+                        </div>
+                        <div class="card fade-up" style="cursor:pointer;" onclick="document.querySelector('[data-view=variants]').click()">
+                            <div class="stat-header">
+                                <span class="stat-label">Acceso rápido</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" style="width:16px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </div>
+                            <div style="font-size:0.85rem;color:var(--accent);font-weight:600;margin-top:8px;">Explorar variantes →</div>
+                            <div style="font-size:0.75rem;color:var(--text-tertiary);margin-top:4px;">Ver tabla TCGA completa</div>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline Steps -->
+                    <div class="card pipeline-card fade-up" style="margin-bottom:20px;">
+                        <div class="pipeline-steps">
+                            <div class="step done" id="step-m1">
+                                <div class="step-circle">M1</div>
+                                <div class="step-label">Ingesta<br>GDC API</div>
+                                <div class="step-pct" style="font-size:0.65rem;color:var(--success);margin-top:2px;">✓</div>
+                            </div>
+                            <div class="step done" id="step-m2">
+                                <div class="step-circle">M2</div>
+                                <div class="step-label">Priorización<br>Variantes</div>
+                                <div class="step-pct" style="font-size:0.65rem;color:var(--success);margin-top:2px;">✓</div>
+                            </div>
+                            <div class="step" id="step-m3">
+                                <div class="step-circle">M3</div>
+                                <div class="step-label">Predicción<br>Estructural</div>
+                                <div class="step-pct" style="font-size:0.65rem;margin-top:2px;color:var(--accent);">—</div>
+                            </div>
+                            <div class="step" id="step-m4">
+                                <div class="step-circle">M4</div>
+                                <div class="step-label">Docking<br>Vina</div>
+                                <div class="step-pct" style="font-size:0.65rem;margin-top:2px;color:var(--accent);">—</div>
+                            </div>
+                            <div class="step" id="step-m5">
+                                <div class="step-circle">M5</div>
+                                <div class="step-label">Reporte<br>Final</div>
+                                <div class="step-pct" style="font-size:0.65rem;margin-top:2px;color:var(--accent);">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini tabla Top-5 variantes con scores -->
+                    <div class="card fade-up">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <div class="section-title" style="margin:0;">Top 5 variantes — resumen integrado</div>
+                            <button class="fasta-btn" style="padding:6px 14px;font-size:0.75rem;"
+                                onclick="document.querySelector('[data-view=variants]').click()">
+                                Ver todas →
+                            </button>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+                                <thead>
+                                    <tr style="border-bottom:1px solid var(--border);color:var(--text-tertiary);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.04em;">
+                                        <th style="padding:8px;text-align:left;">#</th>
+                                        <th style="padding:8px;text-align:left;">Gen</th>
+                                        <th style="padding:8px;text-align:left;">Variante</th>
+                                        <th style="padding:8px;text-align:left;">Casos</th>
+                                        <th style="padding:8px;text-align:left;">Clasificación</th>
+                                        <th style="padding:8px;text-align:left;">Mejor Vina</th>
+                                        <th style="padding:8px;text-align:left;">Fármaco</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="db-top-table">
+                                    <tr><td colspan="7" style="padding:20px;text-align:center;color:var(--text-tertiary);">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>

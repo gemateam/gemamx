@@ -1,5 +1,34 @@
-pymongo
-requests
-pandas
-tqdm
-biopython
+# =============================================================================
+# GEMA MX — Requirements de Python
+# Genomic Analysis of Mammary cancer in Mexico
+# =============================================================================
+# Instalación: pip install -r requirements.txt --break-system-packages
+# Entorno recomendado: Python 3.12+ con virtualenv
+# =============================================================================
+
+# ── Core de datos ─────────────────────────────────────────────────────────
+numpy==1.26.4
+pandas==2.2.2
+requests>=2.31.0
+tqdm>=4.66.0
+
+# ── Bioinformática ────────────────────────────────────────────────────────
+biopython==1.83
+
+# ── Base de datos ─────────────────────────────────────────────────────────
+pymongo>=4.6.0
+
+# ── Quimioinformática y preparación de ligandos (docking) ─────────────────
+# RDKit: generación de coordenadas 3D y optimización de geometría
+rdkit-pypi>=2023.9.5
+
+# Meeko: preparación de archivos PDBQT para AutoDock Vina 1.2+
+meeko>=0.5.0
+
+# ── Predicción estructural (entorno local, sin GPU) ───────────────────────
+# NOTA: Boltz-1 se ejecuta en Google Colab (ver INSTALL.md)
+# Si se desea correr localmente con GPU NVIDIA:
+# boltz>=0.4.0      <- descomentar solo si hay GPU CUDA disponible
+
+# ── Utilidades ────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0
