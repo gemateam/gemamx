@@ -1,0 +1,53 @@
+{
+  "PIK3CA_H1047R": {
+    "wt_plddt": 84.8,
+    "mut_plddt": 85.3,
+    "rmsd_global": 0.78,
+    "rmsd_active": 0.91,
+    "rmsd_regions": [
+      {
+        "region": "Mutation window +/-12 aa",
+        "value": 0.91,
+        "color": "#f59e0b"
+      }
+    ],
+    "structure_mode": "fragment",
+    "fragment_start": 867,
+    "fragment_end": 1068,
+    "mutation_pos": 1047
+  },
+  "AKT1_E17K": {
+    "wt_plddt": 85.4,
+    "mut_plddt": 85.2,
+    "rmsd_global": 0.94,
+    "rmsd_active": 0.67,
+    "rmsd_regions": [
+      {
+        "region": "Mutation window +/-12 aa",
+        "value": 0.67,
+        "color": "#f59e0b"
+      }
+    ],
+    "structure_mode": "fragment",
+    "fragment_start": 1,
+    "fragment_end": 197,
+    "mutation_pos": 17
+  },
+  "PIK3CA_E542K": {
+    "wt_plddt": 90.2,
+    "mut_plddt": 90.2,
+    "rmsd_global": 1.5,
+    "rmsd_active": 1.8,
+    "rmsd_regions": [
+      {
+        "region": "Mutation window +/-12 aa",
+        "value": 1.8,
+        "color": "#f59e0b"
+      }
+    ],
+    "structure_mode": "fragment",
+    "fragment_start": 362,
+    "fragment_end": 722,
+    "mutation_pos": 542
+  }
+}
