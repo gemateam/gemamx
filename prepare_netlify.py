@@ -14,10 +14,10 @@ def prepare_netlify():
     
     # 2. Archivos raíz indispensables
     core_files = [
-        "index.html", "styles.css", 
-        "app.js", "dashboard.js", "analysis.js", 
+        "index.html", "styles.css",
+        "app.js", "dashboard.js", "analysis.js",
         "structural.js", "docking.js", "report.js",
-        "banner.png"
+        "banner.png", "_redirects"
     ]
     
     for f in core_files:
@@ -34,16 +34,34 @@ def prepare_netlify():
     os.makedirs(data_target)
     
     essential_jsons = [
-        "top_variants.json", "raw_mutations.json", 
-        "structural_metrics.json", "manifest_structures.json", 
+        "top_variants.json",
+        "structural_metrics.json", "manifest_structures.json",
         "mutation_stats.json"
     ]
-    
+
     for j in essential_jsons:
         src = os.path.join(data_src, j)
         if os.path.exists(src):
             shutil.copy2(src, data_target)
             print(f"Copiado: data/{j}")
+
+    # raw_mutations.json: paginar en chunks de 500 registros
+    # (el archivo completo pesa ~13 MB, demasiado para móvil)
+    raw_src = os.path.join(data_src, "raw_mutations.json")
+    if os.path.exists(raw_src):
+        with open(raw_src, "r", encoding="utf-8") as f:
+            all_mutations = json.load(f)
+        CHUNK = 500
+        chunks = [all_mutations[i:i+CHUNK] for i in range(0, len(all_mutations), CHUNK)]
+        index = {"total": len(all_mutations), "chunk_size": CHUNK, "chunks": len(chunks)}
+        raw_dir = os.path.join(data_target, "raw_pages")
+        os.makedirs(raw_dir, exist_ok=True)
+        with open(os.path.join(raw_dir, "index.json"), "w", encoding="utf-8") as f:
+            json.dump(index, f)
+        for i, chunk in enumerate(chunks):
+            with open(os.path.join(raw_dir, f"page_{i}.json"), "w", encoding="utf-8") as f:
+                json.dump(chunk, f)
+        print(f"raw_mutations paginado: {len(chunks)} chunks x {CHUNK} registros → data/raw_pages/")
 
     # 3.1 Copiar FASTA (secuencias)
     fasta_src = os.path.join(data_src, "fasta")

@@ -1,0 +1,8 @@
+Concepto,Ano 1 USD,Ano 2 USD,Ano 3 USD,Total 3 anos USD
+GCS storage,3240,13500,31320,48060
+GCS operaciones y transfer,648,2700,6264,9612
+Databricks jobs,16200,30600,46800,93600
+GCP compute para clusters,10000,20000,32000,62000
+Databricks SQL warehouse,6970,10454,13939,31363
+Monitoreo logging y backups,4000,5000,7000,16000
+TOTAL,41058,82254,137323,260635

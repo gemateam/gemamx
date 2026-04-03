@@ -1,0 +1,11 @@
+Categoria,Subcategoria,Incluido,Base de calculo,Ano 1 USD,Ano 2 USD,Ano 3 USD
+GCP,Cloud Storage Bronze/Silver/Gold,Si,"3 GB por caso, retencion acumulada, storage standard",3240,13500,31320
+GCP,Operaciones y transferencia storage,Si,"20% del costo de storage",648,2700,6264
+Databricks,Jobs Compute,Si,"ETL/ELT programado sobre medallion",16200,30600,46800
+GCP,VMs para job clusters,Si,"Infraestructura base para ejecucion de clusters",10000,20000,32000
+Databricks,SQL Warehouse,Si,"Consulta, dashboards, exportacion",6970,10454,13939
+GCP,Monitoreo logging backups,Si,"Operacion minima de plataforma",4000,5000,7000
+Excluido,AlphaFold/Boltz/Docking/GPUs,No,"Presupuesto cientifico separado",0,0,0
+Excluido,OpenShift/microservicios/DevOps extendido,No,"Fuera de alcance medallion",0,0,0
+Excluido,RAG/LLM/Gemini/Vertex/MLOps,No,"Fuera de alcance medallion",0,0,0
+Excluido,Capacitacion/soporte/licencias externas,No,"Fuera de alcance medallion",0,0,0

@@ -50,8 +50,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             if (rawDataStore.length === 0) {
-                const response = await fetch('data/raw_mutations.json');
-                rawDataStore = await response.json();
+                // Intentar primero el formato paginado (Netlify)
+                const idxResp = await fetch('data/raw_pages/index.json');
+                if (idxResp.ok) {
+                    const idx = await idxResp.json();
+                    const pages = [];
+                    for (let i = 0; i < idx.chunks; i++) {
+                        const r = await fetch(`data/raw_pages/page_${i}.json`);
+                        pages.push(...(await r.json()));
+                    }
+                    rawDataStore = pages;
+                } else {
+                    // Fallback: archivo monolítico (local)
+                    const response = await fetch('data/raw_mutations.json');
+                    rawDataStore = await response.json();
+                }
                 filteredRawData = [...rawDataStore];
             }
 
