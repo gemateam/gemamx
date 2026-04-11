@@ -1,0 +1,18 @@
+{
+  "_note": "Copia local normalizada para la app y para el ingestor. La fuente recomendada de Colab vive en gromacs/results/gromacs_metrics.json.",
+  "generated_at": null,
+  "pipeline_version": "GEMAMX-GROMACS-v2",
+  "parameters": {
+    "force_field": "charmm36m",
+    "water_model": "tip3p",
+    "md_time_ns": 50,
+    "temperature_K": 300,
+    "top_n_per_variant": 5
+  },
+  "summary": {
+    "pairs_total": 0,
+    "pairs_completed": 0,
+    "pairs_failed": 0
+  },
+  "pairs": []
+}

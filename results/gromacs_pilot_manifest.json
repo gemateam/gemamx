@@ -1,0 +1,188 @@
+{
+  "generated_at": "2026-04-10T17:42:08.540040",
+  "pipeline_version": "GEMAMX-GROMACS-v2-pilot",
+  "selection_policy": {
+    "mode": "pilot curated subset",
+    "source_manifest": "D:\\ProyectosIA\\GEMAMX\\gromacs\\results\\gromacs_batch_manifest.json",
+    "variants": [
+      "PIK3CA_H1047R",
+      "ERBB2_V777L",
+      "TP53_R248Q"
+    ],
+    "priority_by_variant": {
+      "PIK3CA_H1047R": [
+        "Alpelisib",
+        "Pictilisib"
+      ],
+      "ERBB2_V777L": [
+        "Pictilisib",
+        "Alpelisib"
+      ],
+      "TP53_R248Q": [
+        "Abemaciclib",
+        "Pictilisib"
+      ]
+    }
+  },
+  "summary": {
+    "variants_considered": 3,
+    "pairs_selected": 6,
+    "per_variant_counts": {
+      "PIK3CA_H1047R": 2,
+      "ERBB2_V777L": 2,
+      "TP53_R248Q": 2
+    }
+  },
+  "pairs": [
+    {
+      "tag": "PIK3CA_H1047R__Alpelisib",
+      "variant_id": "PIK3CA_H1047R",
+      "drug_name": "Alpelisib",
+      "vina_score_kcalmol": -8.903,
+      "input_paths": {
+        "vina_pose_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\PIK3CA_H1047R_Alpelisib_out.pdbqt",
+        "vina_log_txt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\PIK3CA_H1047R_Alpelisib_log.txt",
+        "complex_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\complex\\PIK3CA_H1047R_Alpelisib_complex.pdb",
+        "receptor_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\PIK3CA_H1047R.pdbqt",
+        "receptor_clean_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\PIK3CA_H1047R_clean.pdb",
+        "ligand_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Alpelisib.pdbqt",
+        "ligand_sdf": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Alpelisib.sdf"
+      },
+      "recommended_colab_run_dir": "gromacs/runs/PIK3CA_H1047R__Alpelisib",
+      "available_inputs": {
+        "vina_pose_pdbqt": true,
+        "vina_log_txt": true,
+        "complex_pdb": true,
+        "receptor_pdbqt": true,
+        "receptor_clean_pdb": true,
+        "ligand_pdbqt": true,
+        "ligand_sdf": true
+      }
+    },
+    {
+      "tag": "PIK3CA_H1047R__Pictilisib",
+      "variant_id": "PIK3CA_H1047R",
+      "drug_name": "Pictilisib",
+      "vina_score_kcalmol": -9.72,
+      "input_paths": {
+        "vina_pose_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\PIK3CA_H1047R_Pictilisib_out.pdbqt",
+        "vina_log_txt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\PIK3CA_H1047R_Pictilisib_log.txt",
+        "complex_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\complex\\PIK3CA_H1047R_Pictilisib_complex.pdb",
+        "receptor_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\PIK3CA_H1047R.pdbqt",
+        "receptor_clean_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\PIK3CA_H1047R_clean.pdb",
+        "ligand_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Pictilisib.pdbqt",
+        "ligand_sdf": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Pictilisib.sdf"
+      },
+      "recommended_colab_run_dir": "gromacs/runs/PIK3CA_H1047R__Pictilisib",
+      "available_inputs": {
+        "vina_pose_pdbqt": true,
+        "vina_log_txt": true,
+        "complex_pdb": true,
+        "receptor_pdbqt": true,
+        "receptor_clean_pdb": true,
+        "ligand_pdbqt": true,
+        "ligand_sdf": true
+      }
+    },
+    {
+      "tag": "ERBB2_V777L__Pictilisib",
+      "variant_id": "ERBB2_V777L",
+      "drug_name": "Pictilisib",
+      "vina_score_kcalmol": -7.995,
+      "input_paths": {
+        "vina_pose_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\ERBB2_V777L_Pictilisib_out.pdbqt",
+        "vina_log_txt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\ERBB2_V777L_Pictilisib_log.txt",
+        "complex_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\complex\\ERBB2_V777L_Pictilisib_complex.pdb",
+        "receptor_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\ERBB2_V777L.pdbqt",
+        "receptor_clean_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\ERBB2_V777L_clean.pdb",
+        "ligand_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Pictilisib.pdbqt",
+        "ligand_sdf": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Pictilisib.sdf"
+      },
+      "recommended_colab_run_dir": "gromacs/runs/ERBB2_V777L__Pictilisib",
+      "available_inputs": {
+        "vina_pose_pdbqt": true,
+        "vina_log_txt": true,
+        "complex_pdb": true,
+        "receptor_pdbqt": true,
+        "receptor_clean_pdb": true,
+        "ligand_pdbqt": true,
+        "ligand_sdf": true
+      }
+    },
+    {
+      "tag": "ERBB2_V777L__Alpelisib",
+      "variant_id": "ERBB2_V777L",
+      "drug_name": "Alpelisib",
+      "vina_score_kcalmol": -7.416,
+      "input_paths": {
+        "vina_pose_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\ERBB2_V777L_Alpelisib_out.pdbqt",
+        "vina_log_txt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\ERBB2_V777L_Alpelisib_log.txt",
+        "complex_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\complex\\ERBB2_V777L_Alpelisib_complex.pdb",
+        "receptor_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\ERBB2_V777L.pdbqt",
+        "receptor_clean_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\ERBB2_V777L_clean.pdb",
+        "ligand_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Alpelisib.pdbqt",
+        "ligand_sdf": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Alpelisib.sdf"
+      },
+      "recommended_colab_run_dir": "gromacs/runs/ERBB2_V777L__Alpelisib",
+      "available_inputs": {
+        "vina_pose_pdbqt": true,
+        "vina_log_txt": true,
+        "complex_pdb": true,
+        "receptor_pdbqt": true,
+        "receptor_clean_pdb": true,
+        "ligand_pdbqt": true,
+        "ligand_sdf": true
+      }
+    },
+    {
+      "tag": "TP53_R248Q__Abemaciclib",
+      "variant_id": "TP53_R248Q",
+      "drug_name": "Abemaciclib",
+      "vina_score_kcalmol": -7.447,
+      "input_paths": {
+        "vina_pose_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\TP53_R248Q_Abemaciclib_out.pdbqt",
+        "vina_log_txt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\TP53_R248Q_Abemaciclib_log.txt",
+        "complex_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\complex\\TP53_R248Q_Abemaciclib_complex.pdb",
+        "receptor_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\TP53_R248Q.pdbqt",
+        "receptor_clean_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\TP53_R248Q_clean.pdb",
+        "ligand_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Abemaciclib.pdbqt",
+        "ligand_sdf": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Abemaciclib.sdf"
+      },
+      "recommended_colab_run_dir": "gromacs/runs/TP53_R248Q__Abemaciclib",
+      "available_inputs": {
+        "vina_pose_pdbqt": true,
+        "vina_log_txt": true,
+        "complex_pdb": true,
+        "receptor_pdbqt": true,
+        "receptor_clean_pdb": true,
+        "ligand_pdbqt": true,
+        "ligand_sdf": true
+      }
+    },
+    {
+      "tag": "TP53_R248Q__Pictilisib",
+      "variant_id": "TP53_R248Q",
+      "drug_name": "Pictilisib",
+      "vina_score_kcalmol": -6.666,
+      "input_paths": {
+        "vina_pose_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\TP53_R248Q_Pictilisib_out.pdbqt",
+        "vina_log_txt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\results\\TP53_R248Q_Pictilisib_log.txt",
+        "complex_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\complex\\TP53_R248Q_Pictilisib_complex.pdb",
+        "receptor_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\TP53_R248Q.pdbqt",
+        "receptor_clean_pdb": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\receptors\\TP53_R248Q_clean.pdb",
+        "ligand_pdbqt": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Pictilisib.pdbqt",
+        "ligand_sdf": "D:\\ProyectosIA\\GEMAMX\\data\\docking\\ligands\\Pictilisib.sdf"
+      },
+      "recommended_colab_run_dir": "gromacs/runs/TP53_R248Q__Pictilisib",
+      "available_inputs": {
+        "vina_pose_pdbqt": true,
+        "vina_log_txt": true,
+        "complex_pdb": true,
+        "receptor_pdbqt": true,
+        "receptor_clean_pdb": true,
+        "ligand_pdbqt": true,
+        "ligand_sdf": true
+      }
+    }
+  ]
+}
